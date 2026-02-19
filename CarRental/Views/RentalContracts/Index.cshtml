@@ -102,23 +102,25 @@ else
 								<span class="badge bg-warning text-dark">Завършен</span>
 							}
 						</td>
-						<td class="text-end">
-							<a asp-controller="RentalContracts" asp-action="Details" asp-route-id="@rental.Id" class="btn btn-baby-blue">Детайли</a>
-							@if (isActive)
-							{
-								<form asp-controller="RentalContracts" asp-action="Finish" method="post" class="d-inline">
-									<input type="hidden" name="id" value="@rental.Id" />
-									<button type="submit" class="btn btn-baby-green">
-										Завърши
-									</button>
-								</form>
-								<form asp-controller="RentalContracts" asp-action="Cancel" method="post" class="d-inline">
-									<input type="hidden" name="id" value="@rental.Id" />
-									<button type="submit" class="btn btn-baby-red">
-										Анулирай
-									</button>
-								</form>
-							}
+						<td>
+							<div class="d-flex justify-content-end gap-2">
+								<a asp-controller="RentalContracts" asp-action="Details" asp-route-id="@rental.Id" class="btn btn-baby-blue">Детайли</a>
+								@if (isActive)
+								{
+									<form asp-controller="RentalContracts" asp-action="Finish" method="post" class="d-inline">
+										<input type="hidden" name="id" value="@rental.Id" />
+										<button type="submit" class="btn btn-baby-green">
+											Завърши
+										</button>
+									</form>
+									<form asp-controller="RentalContracts" asp-action="Cancel" method="post" class="d-inline">
+										<input type="hidden" name="id" value="@rental.Id" />
+										<button type="submit" class="btn btn-baby-red">
+											Анулирай
+										</button>
+									</form>
+								}
+							</div>
 						</td>
 					</tr>
 				}
