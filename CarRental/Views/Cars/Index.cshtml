@@ -1,0 +1,189 @@
+﻿@using CarRental.Enums
+@using CarRental.Helpers
+@using CarRental.Models.ViewModels
+@model CarsIndexViewModel
+
+@{
+	ViewData["Title"] = "Автомобили";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+	<h2 class="pink-title mb-0">Автомобили</h2>
+	@if (User.IsInRole("Administrator"))
+	{
+		<a asp-controller="Cars" asp-action="Create" class="btn btn-baby-green">
+			➕ Добави
+		</a>
+	}
+	@if (User.IsInRole("Client"))
+	{
+		<a asp-controller="RentalContracts" asp-action="MyRentals" class="btn btn-pink">
+			🔑 Моите наеми
+		</a>
+	}
+</div>
+<form method="get" class="card card-body filter-card mb-2">
+	<div class="row g-3 align-items-end">
+		<div class="col-md-3">
+			<label class="form-label pink-label">Марка</label>
+			<input type="text" name="brand" value="@Model.Brand" class="form-control pink-input" placeholder="напр. BMW" />
+		</div>
+		<div class="col-md-3">
+			<label class="form-label pink-label">Статус</label>
+			<select class="form-select pink-select" name="status">
+				<option value="">--Всички--</option>
+
+				@foreach (EnumDTO status in Model.Statuses)
+				{
+					bool isSelected = Model.Status?.ToString() == status.Value.ToString();
+					<option value="@status.Value" selected="@isSelected">@status.Text</option>
+				}
+			</select>
+		</div>
+		<div class="col-md-3">
+			<label class="form-label pink-label">Тип</label>
+			<select name="type" class="form-select pink-select">
+				<option value="">-- Всички --</option>
+				@foreach (EnumDTO type in Model.Types)
+				{
+					bool isSelected = (Model.Type?.ToString() == type.Value.ToString());
+					<option value="@type.Value" selected="@isSelected">@type.Text</option>
+				}
+			</select>
+		</div>
+		<div class="col-md-3">
+			<label class="form-label pink-label">Година</label>
+			<input type="text" name="year" value="@Model.Year" class="form-control pink-input" placeholder="напр. 2020" />
+		</div>
+	</div>
+	<div class="row g-3 my-2">
+		<div class="col-md-2 d-grid">
+			<button type="submit" class="btn btn-softpink">Филтрирай</button>
+		</div>
+		<div class="col-md-2 d-grid">
+			<a asp-controller="Cars" asp-action="Index" class="btn btn-outline-secondary">
+				Изчисти
+			</a>
+		</div>
+	</div>
+</form>
+
+@if (!Model.Cars.Any())
+{
+	<div class="alert alert-info">Няма намерени автомобили по зададените филтри.</div>
+}
+else
+{
+	<div class="row g-3 mt-2">
+		@foreach (var car in Model.Cars)
+		{
+			<div class="col-md-4">
+				<div class="card car-card h-100 shadow-sm">
+					@if (!string.IsNullOrEmpty(car.ImageUrl))
+					{
+						<img src="@car.ImageUrl"
+							 style="height: 190px; object-fit: cover;"
+							 alt="Снимка на автомобил" />
+					}
+					else
+					{
+						<div class="d-flex justify-content-center align-items-center bg-light"
+							 style="height: 190px;">
+							<span class="text-muted">Няма снимка</span>
+						</div>
+					}
+
+					<div class="card-body">
+						<h5 class="car-title mb-1">@car.Brand @car.Model</h5>
+						<div class="text-muted small mb-2">Рег. № @car.RegistrationNumber</div>
+
+						<div class="d-flex flex-wrap gap-2">
+							@if (car.Status == CarStatus.Available)
+							{
+								<span class="badge bg-success">Наличен</span>
+							}
+							else if (car.Status == CarStatus.Rented)
+							{
+								<span class="badge bg-danger">Наета</span>
+							}
+							else if (car.Status == CarStatus.InService)
+							{
+								<span class="badge bg-warning text-dark">В сервиз</span>
+							}
+							<span class="badge bg-light text-dark border">@car.Type.GetDisplayName()</span>
+							<span class="badge bg-light text-dark border">@car.Year г.</span>
+						</div>
+
+						<div class="mt-3 d-flex align-items-baseline gap-2">
+							Цена на ден:
+							<span class="text-success" style="font-size:large;">
+								@{
+									var tariff = Model.Tariffs.FirstOrDefault(t => t.CarType == car.Type);
+								}
+								@(tariff != null ? tariff.PricePerDay.ToString("0.00") : "-") €
+							</span>
+						</div>
+					</div>
+
+					<div class="card-footer bg-white border-0 pt-0">
+						<div class="d-flex gap-2 mb-1">
+							<a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id"
+							   class="btn btn-baby-blue">
+								Детайли
+							</a>
+
+							@if (User.IsInRole("Client") && car.Status != CarStatus.InService)
+							{
+								<a asp-controller="RentalContracts" asp-action="Create" asp-route-carId="@car.Id"
+								   class="btn btn-baby-green">
+									Наеми
+								</a>
+							}
+
+							@if (User.IsInRole("Administrator"))
+							{
+								@if (car.Status == CarStatus.Rented)
+								{
+									<button class="btn btn-baby-grey" disabled>Редакция</button>
+								}
+								else
+								{
+									<a asp-controller="Cars" asp-action="Edit" asp-route-id="@car.Id"
+									   class="btn btn-baby-yellow">
+										Редакция
+									</a>
+								}
+
+
+								@if (car.Status == CarStatus.Available)
+								{
+									<form asp-controller="Cars" asp-action="SendToService" method="post">
+										<input type="hidden" name="id" value="@car.Id" />
+										<button type="submit" class="btn btn-softpink">
+											Изпрати в сервиз
+										</button>
+									</form>
+								}
+								else if (car.Status == CarStatus.InService)
+								{
+									<form asp-controller="Cars" asp-action="ReturnFromService" method="post">
+										<input type="hidden" name="id" value="@car.Id" />
+										<button type="submit" class="btn btn-outline-secondary">
+											Върни от сервиз
+										</button>
+									</form>
+								}
+
+								<a asp-controller="Cars" asp-action="Delete" asp-route-id="@car.Id"
+								   class="btn btn-baby-red">
+									Изтрий
+								</a>
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+
+}

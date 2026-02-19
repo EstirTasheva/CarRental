@@ -1,0 +1,194 @@
+﻿.pink-title {
+    color: mediumvioletred;
+    font-weight: 700;
+}
+
+.pink-label {
+    color: mediumvioletred;
+    font-weight: 600;
+}
+
+.pink-input:focus,
+.pink-select:focus {
+    border-color: hotpink;
+    box-shadow: 0 0 5px hotpink;
+}
+
+.btn-pink {
+    background-color: mediumvioletred;
+    border: 1px solid mediumvioletred;
+    color: white;
+}
+
+.btn-pink:hover {
+    background-color: deeppink;
+    border-color: deeppink;
+    color: white;
+}
+
+.btn-softpink {
+    background-color: lavenderblush;
+    border: 1px solid pink;
+    color: mediumvioletred;
+}
+
+.btn-softpink:hover {
+    background-color: lightpink;
+    border-color: lightpink;
+    color: mediumvioletred;
+}
+
+.btn-baby-blue {
+    background-color: #cfe9f5;
+    color: #084b63;
+    border: 1px solid #b6dcea;
+}
+
+.btn-baby-red {
+    background-color: #f4a6a6;
+    color: #7a1f1f;
+    border: 1px solid #f09a9a;
+}
+
+.btn-baby-yellow {
+    background-color: #fff3cd;
+    color: #664d03;
+    border: 1px solid #ffe69c;
+}
+
+.btn-baby-blue:hover {
+    background-color: #b9dfee;
+    color: #06384a;
+}
+
+.btn-baby-yellow:hover {
+    background-color: #ffe8a1;
+    color: #5c4500;
+}
+
+.btn-baby-red:hover {
+    background-color: #ef8f8f;
+    color: #5f1414;
+}
+
+.btn-baby-green {
+    background-color: #d9f2e3;
+    color: #1f5e3b;
+    border: 1px solid #bfe6d1;
+}
+
+.btn-baby-grey {
+    background-color: #f2f2f2;
+    color: #444;
+    border: 1px solid #ddd;
+}
+
+.btn-baby-green:hover {
+    background-color: #c6ead8;
+    color: #174a2f;
+}
+
+.btn-baby-grey:hover {
+    background-color: #e6e6e6;
+    color: #222;
+}
+
+.footer-title {
+    font-weight: 600;
+    color: #a0185e;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 6px;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #5a3a48;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+    color: #a0185e;
+}
+
+.home-logo {
+    height: 90px;
+}
+
+.home-card {
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.home-img {
+    width: 100%;
+    height: 100%;
+    max-height: 320px;
+    object-fit: cover;
+    display: block;
+}
+
+.info-box {
+    background: lavenderblush;
+    border: 1px solid #f1d1df;
+    border-radius: 16px;
+    padding: 18px;
+    text-align: center;
+}
+
+.info-box2 {
+    background: white;
+    border: 1px solid #f1d1df;
+    border-radius: 16px;
+    padding: 18px;
+    text-align: center;
+}
+
+.info-top {
+    color: mediumvioletred;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.feature-card {
+    background: white;
+    border: 1px solid #f1d1df;
+    border-radius: 16px;
+    padding: 18px;
+    height: 100%;
+}
+
+.feature-card h5 {
+    color: mediumvioletred;
+    font-weight: 800;
+}
+
+.home-bg {
+    height: 100vh;
+    width: 100%;
+    background-image: url('/images/pinkPhoto.png');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+}
+
+.home-box {
+    background-color: #ffffffcc;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.bg-pink {
+    background-color: lavenderblush !important;
+}

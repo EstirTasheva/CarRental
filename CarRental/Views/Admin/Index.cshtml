@@ -1,0 +1,72 @@
+﻿@using CarRental.Enums
+@using CarRental.Helpers
+@using Microsoft.AspNetCore.Identity
+@model IEnumerable<ApplicationUser>
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+	ViewData["Title"] = "Управление на роли";
+}
+
+<h2 class="mb-3 pink-title">Управление на роли</h2>
+
+<div class="mb-4">
+	<table class="table table-striped table-hover">
+		<thead>
+			<tr>
+				<th>Имейл</th>
+				<th>Име</th>
+				<th>Роли</th>
+				<th class="text-end">Действия</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var user in Model)
+			{
+				var roles = await UserManager.GetRolesAsync(user);
+				<tr>
+					<td>@user.Email</td>
+					<td>@user.FirstName @user.LastName</td>
+					@{
+						Role mainRole = Role.Client;
+
+						if (roles.Contains(Role.Administrator.ToString()))
+						{
+							mainRole = Role.Administrator;
+						}
+						else if (roles.Contains(Role.Employee.ToString()))
+						{
+							mainRole = Role.Employee;
+						}
+					}
+					<td>@EnumDisplayHelper.GetDisplayName(mainRole)</td>
+					<td class="text-end">
+						@if (!roles.Contains(Role.Administrator.ToString()))
+						{
+							if (roles.Contains(Role.Employee.ToString()))
+							{
+								<form asp-controller="Admin" asp-action="RemoveEmployee" method="post" class="d-inline">
+									<input type="hidden" name="userId" value="@user.Id" />
+									<button type="submit" class="btn btn-softpink w-50">
+										Премахни служител
+									</button>
+								</form>
+							}
+							else
+							{
+								<form asp-controller="Admin" asp-action="MakeEmployee" method="post" class="d-inline">
+									<input type="hidden" name="userId" value="@user.Id" />
+									<button type="submit" class="btn btn-pink w-50">
+										Направи служител
+									</button>
+								</form>
+							}
+						}
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
+
+

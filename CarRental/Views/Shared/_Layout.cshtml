@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - Наем на автомобили</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/pink-theme.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/CarRental.styles.css" asp-append-version="true" />
+
+</head>
+<body class="min-vh-100">
+	<header>
+		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+			<div class="container-fluid">
+				<a class="navbar-brand logo" asp-controller="Home" asp-action="Index" title="Наем на автомобили">
+					<img src="~/images/RentACarLogo.png" alt="Лого" style="height:40px;" class="logo-img" />
+				</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<li class="nav-item">
+							<a class="nav-link" asp-controller="Cars" asp-action="Index">Автомобили</a>
+						</li>
+						@if (User.IsInRole("Client"))
+						{
+							<li class="nav-item">
+								<a class="nav-link" asp-controller="RentalContracts" asp-action="MyRentals">Моите наеми</a>
+							</li>
+						}
+						@if (User.IsInRole("Administrator") || User.IsInRole("Employee"))
+						{
+							<li class="nav-item">
+								<a class="nav-link" asp-controller="RentalContracts" asp-action="Index">Договори</a>
+							</li>
+							
+						}
+						<li class="nav-item">
+							<a class="nav-link" asp-controller="PriceTariffs" asp-action="Index">Ценови тарифи</a>
+						</li>
+						@if (User.IsInRole("Administrator"))
+						{
+							<li class="nav-item">
+								<a class="nav-link" asp-controller="Admin" asp-action="Clients">Клиенти</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" asp-controller="Admin" asp-action="Index">Управление на роли</a>
+							</li>
+						}
+					</ul>
+					<partial name="_LoginPartial" />
+				</div>
+			</div>
+		</nav>
+	</header>
+	<div class="container flex-grow-1">
+		<main role="main" class="pb-3">
+			@RenderBody()
+		</main>
+	</div>
+
+	<footer class="border-top text-muted bg-pink">
+		<div class="container py-3">
+			<div class="row text-center text-md-start">
+
+				<div class="col-md-3">
+					<h6 class="pink-label">Наем на автомобили "Розов свят"</h6>
+					<p class="text-muted small">
+						"Розов свят" е водещата компания за наем на автомобили
+						в България и един от най-бързо развиващите се брандове на Балканите.
+				</div>
+
+				<div class="col-md-3">
+					<h6 class="pink-label">Навигация</h6>
+					<ul class="footer-links">
+						<li>
+							<a asp-controller="Home" asp-action="Index">Начало</a>
+						</li>
+						<li>
+							<a asp-controller="Cars" asp-action="Index">Автомобили</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="col-md-3 mb-3">
+					<h6 class="pink-label">Контакти</h6>
+					<p class="small mb-1">📧 carrental@abv.bg</p>
+					<p class="small">📞 +359 89 615 8380</p>
+				</div>
+
+				<div class="col-md-3 mb-3">
+					<h6 class="pink-label">Методи за плащане</h6>
+					<div class="d-flex align-items-center">
+						<img src="~/images/payments/mastercard.png" style="height:40px;" />
+						<img src="~/images/payments/applepay.png" style="height:40px;" />
+						<img src="~/images/payments/googlepay.png" style="height:30px;" />
+						<img src="~/images/payments/visa.png" style="height:40px;" />
+					</div>
+				</div>
+			</div>
+
+			<hr />
+
+			<div class="text-center small">
+				© 2026 CarRental – Всички права запазени
+			</div>
+		</div>
+    </footer>
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

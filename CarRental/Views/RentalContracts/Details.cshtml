@@ -1,0 +1,83 @@
+﻿@using CarRental.Models
+@using CarRental.Helpers
+@using CarRental.Enums
+@model RentalContract
+
+@{
+	ViewData["Title"] = "Детайли за договор";
+}
+
+<h2 class="pink-title mb-3">Детайли за договор</h2>
+
+<div class="card card-body filter-card mb-3">
+	<div class="row g-3 align-items-start">
+		<div class="col-md-2">
+			<label class="form-label pink-label">Автомобил</label>
+			<div class="fw-semibold">
+				@Model.Car.Brand @Model.Car.Model
+				<div class="text-muted small">Рег. № @Model.Car.RegistrationNumber</div>
+			</div>
+		</div>
+		<div class="col-md-2">
+			<div class="pink-label mb-2">Клиент</div>
+			<div class="fw-semibold">
+				@Model.Client.FirstName @Model.Client.LastName
+				<div class="text-muted small">Имейл: @Model.Client.Email</div>
+				<div class="text-muted small">
+					Предишни наеми: @Model.Client.PreviousRentalsCount
+				</div>
+			</div>
+		</div>
+		<div class="col-md-2">
+			<label class="form-label pink-label">Начална дата</label>
+			<div class="fw-semibold">
+				@Model.StartDate.ToString("dd.MM.yyyy")
+			</div>
+		</div>
+		<div class="col-md-2">
+			<label class="form-label pink-label">Крайна дата</label>
+			<div class="fw-semibold">
+				@Model.EndDate.ToString("dd.MM.yyyy")
+			</div>
+		</div>
+		<div class="col-md-2">
+			<label class="form-label pink-label">Обща цена</label>
+			<div class="fw-semibold">
+				@Model.TotalPrice.ToString("0.00") €
+			</div>
+		</div>
+		<div class="col-md-2">
+			<label class="form-label pink-label">Статус</label>
+			<div class="fw-semibold">
+				@if (@Model.Status == RentalContractStatus.Active)
+				{
+					<span class="badge bg-success">Активен</span>
+				}
+				else if (@Model.Status == RentalContractStatus.Canceled)
+				{
+					<span class="badge bg-danger">Анулиран</span>
+				}
+				else if (@Model.Status == RentalContractStatus.Finished)
+				{
+					<span class="badge bg-warning text-dark">Завършен</span>
+				}
+			</div>
+		</div>
+	</div>
+	<div class="d-flex justify-content-end gap-2 mt-3">
+		<a asp-controller="RentalContracts" asp-action="Index" class="btn btn-outline-secondary">Назад</a>
+		@if (Model.Status == RentalContractStatus.Active)
+		{
+			<form asp-action="Finish" method="post" class="d-inline">
+				<input type="hidden" asp-for="Id" />
+				<button type="submit" class="btn btn-baby-green">Завърши</button>
+			</form>
+			<form asp-action="Cancel" method="post" class="d-inline">
+				<input type="hidden" asp-for="Id" />
+				<button type="submit" class="btn btn-baby-red">Анулирай</button>
+			</form>
+		}
+	</div>
+</div>
+
+

@@ -1,0 +1,105 @@
+﻿@using CarRental.Models
+@using CarRental.Enums
+@using CarRental.Helpers;
+@model Car
+
+@{
+	ViewData["Title"] = "Добавяне на автомобил";
+
+	// Типове
+	IEnumerable<EnumDTO>? types;
+	if (ViewBag.Types != null)
+	{
+		types = ViewBag.Types as IEnumerable<EnumDTO>;
+	}
+	else
+	{
+		types = new List<EnumDTO>();
+	}
+}
+
+<h2 class="mb-3 pink-title">Добавяне на автомобил</h2>
+<form asp-controller="Cars" asp-action="Create" method="post" enctype="multipart/form-data" class="card card-body filter-card">
+	@Html.AntiForgeryToken()
+	<div class="row g-3">
+		<div class="col-md-4">
+			<label asp-for="RegistrationNumber" class="form-label pink-label"></label>
+			<input asp-for="RegistrationNumber" class="form-control pink-input" />
+			<span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+		</div>
+		<div class="col-md-4">
+			<label asp-for="Brand" class="form-label pink-label"></label>
+			<input asp-for="Brand" class="form-control pink-input" />
+			<span asp-validation-for="Brand" class="text-danger"></span>
+		</div>
+		<div class="col-md-4">
+			<label asp-for="Model" class="form-label pink-label"></label>
+			<input asp-for="Model" class="form-control pink-input" />
+			<span asp-validation-for="Model" class="text-danger"></span>
+		</div>
+		<div class="col-md-3">
+			<label asp-for="Year" class="form-label pink-label"></label>
+			<input asp-for="Year" class="form-control pink-input" />
+			<span asp-validation-for="Year" class="text-danger"></span>
+		</div>
+		<div class="col-md-3">
+			<label class="form-label pink-label">Тип автомобил</label>
+			<select asp-for="Type" id="Type" class="form-select pink-input">
+				<option value="">--Избери тип--</option>
+				@foreach (EnumDTO type in types)
+				{
+					<option value="@type.Value">@type.Text</option>
+				}
+			</select>
+			<span asp-validation-for="Type" class="text-danger"></span>
+		</div>
+		<div class="col-md-3">
+			<label class="form-label pink-label">Статус</label>
+			<input class="form-control pink-input" value="Наличен" readonly />
+		</div>
+		<div class="col-md-3">
+			<label asp-for="PricePerDay" class="form-label pink-label">Цена на ден</label>
+			<input id="priceBox" class="form-control pink-input" readonly />
+			<div class="form-text text-muted">Цената се определя по тарифа.</div>
+		</div>
+		<div class="col-md-6">
+			<label asp-for="ImageUrl" class="form-label pink-label"></label>
+			<input asp-for="ImageUrl"class="form-control pink-input" placeholder="https://..." />
+			<span asp-validation-for="ImageUrl" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="mt-2 d-flex justify-content-end gap-2">
+		<a asp-action="Index" class="btn btn-outline-secondary">Назад</a>
+		<button type="submit" name="submit" value="save" class="btn btn-baby-green">Запази</button>
+	</div>
+</form>
+
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+
+	<script>
+		$("#Type").on("change", function () {
+			var carTypeValue = $(this).val();
+			var priceBox = $("#priceBox");
+
+			if (!carTypeValue) {
+				priceBox.val("-");
+				return;
+			}
+
+			$.ajax({
+				type: "GET",
+				url: "/Cars/GetPriceForType",
+				data: { type: carTypeValue },
+				dataType: "json",
+				success: function (data) {
+					priceBox.val(Number(data).toFixed(2) + " €");
+				},
+				error: function () {
+					priceBox.val("-")
+				}
+			});
+		});
+	</script>
+}

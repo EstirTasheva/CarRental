@@ -1,0 +1,35 @@
+﻿@using CarRental.Helpers
+@model PriceTariff
+
+@{
+	ViewData["Title"] = "Редактиране на ценова тарифа";
+}
+
+<h2 class="pink-title mb-3">Редактиране на ценова тарифа</h2>
+
+<div class="row">
+	<div class="col-md-4">
+		<form method="post" class="card card-body filter-card">
+			<input type="hidden" asp-for="Id" />
+			<div class="mb-3">
+				<label class="form-label pink-label">Тип автомобил</label>
+				<input class="form-control pink-input" value="@Model.CarType.GetDisplayName()" disabled />
+			</div>
+			<div class="mb-3">
+				<label asp-for="PricePerDay" class="form-label pink-label"></label>
+				<input asp-for="PricePerDay" class="form-control pink-input" type="number" step="0.01" />
+				<span asp-validation-for="PricePerDay" class="text-danger"></span>
+			</div>
+			<div class="d-flex justify-content-end gap-2">
+				<a asp-controller="PriceTariffs" asp-action="Index" class="btn btn-outline-secondary">Назад</a>
+				<button type="submit" class="btn btn-baby-green">Запази</button>
+			</div>
+		</form>
+	</div>
+    <div class="col-md-8">
+		<div class="alert alert-info">
+			<strong>Важно:</strong> Ценовите тарифи се използват за определяне на цената на наемите въз основа на типа автомобил. Уверете се, че цената на ден е коректна, преди да запазите промените.
+		</div>
+	</div>
+</div>
+

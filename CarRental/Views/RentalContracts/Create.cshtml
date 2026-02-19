@@ -1,0 +1,57 @@
+﻿@using CarRental.Models.ViewModels
+@model RentalCreateViewModel
+
+@{
+	Car car = ViewBag.Car as Car ?? new Car();
+	ViewData["Title"] = "Наемане на автомобил";
+}
+
+<h2 class="pink-title">Наемане на автомобил</h2>
+<div class="card card-body filter-card">
+	<div asp-validation-summary="All" class="text-danger mb-2"></div>
+	<div class="alert alert-success">
+		<strong>@car.Brand @car.Model</strong><br />
+		Цена на ден: 
+		@{
+			List<PriceTariff> tariffs = ViewBag.Tariffs as List<PriceTariff> ?? new List<PriceTariff>();
+			var tariff = tariffs.FirstOrDefault(t => t.CarType == car.Type);
+		}
+		@(tariff != null ? tariff.PricePerDay.ToString("0.00") : "-") €
+	</div>
+
+	<form method="post">
+		<input type="hidden" asp-for="CarId" />
+		<div class="row g-2 align-items-end">
+			<div class="col-md-4">
+				<label asp-for="StartDate" class="form-label pink-label"></label>
+				<input asp-for="StartDate" class="form-control pink-input" type="date" />
+				<span asp-validation-for="StartDate" class="text-danger"></span>
+			</div>
+			<div class="col-md-4">
+				<label asp-for="EndDate" class="form-label pink-label"></label>
+				<input asp-for="EndDate" class="form-control pink-input" type="date" />
+				<span asp-validation-for="EndDate" class="text-danger"></span>
+			</div>
+			<div class="col-md-4">
+				<label class="form-label pink-label">Метод на плащане</label>
+				<select class="form-select pink-select">
+					<option value="">-- Изберете метод на плащане --</option>
+					<option value="Cash">В брой на място</option>
+					<option value="Card">Кредитна/Дебитна карта</option>
+				</select>
+				<span class="text-danger"></span>
+			</div>
+			<div class="col-md-12 mt-3">
+				<div class="d-flex gap-2 justify-content-end">
+					<a asp-controller="Cars" asp-action="Index" class="btn btn-outline-secondary">Назад</a>
+					<button type="submit" class="btn btn-baby-green">Плати и наеми</button>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}
+

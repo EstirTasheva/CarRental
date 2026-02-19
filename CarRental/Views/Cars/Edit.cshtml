@@ -1,0 +1,124 @@
+﻿@using CarRental.Models
+@using CarRental.Helpers
+@model Car
+
+@{
+	ViewData["Title"] = "Редактиране на автомобил";
+
+	IEnumerable<EnumDTO> types;
+	if (ViewBag.Types != null)
+	{
+		types = ViewBag.Types as IEnumerable<EnumDTO>;
+	}
+	else
+	{
+		types = new List<EnumDTO>();
+	}
+
+	List<PriceTariff> tariffs = ViewBag.Tariffs as List<PriceTariff>;
+	var tariff = tariffs.FirstOrDefault(t => t.CarType == Model.Type);
+}
+
+<h2 class="mb-3 pink-title">Редактиране на автомобил</h2>
+
+<form asp-controller="Cars" asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data" class="card card-body filter-card p-4">
+	<div asp-validation-summary="All" class="text-danger mb-2"></div>
+
+	<div class="row g-3 align-items-end">
+		<div class="col-md-4">
+			<label asp-for="RegistrationNumber" class="form-label pink-label"></label>
+			<input asp-for="RegistrationNumber" class="form-control pink-input" />
+			<span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+		</div>
+		<div class="col-md-4">
+			<label asp-for="Brand" class="form-label pink-label"></label>
+			<input asp-for="Brand" class="form-control pink-input" />
+			<span asp-validation-for="Brand" class="text-danger"></span>
+		</div>
+		<div class="col-md-4">
+			<label asp-for="Model" class="form-label pink-label"></label>
+			<input asp-for="Model" class="form-control pink-input" />
+			<span asp-validation-for="Model" class="text-danger"></span>
+		</div>
+		<div class="col-md-4">
+			<label asp-for="Year" class="form-label pink-label"></label>
+			<input asp-for="Year" class="form-control pink-input" />
+			<span asp-validation-for="Year" class="text-danger"></span>
+		</div>
+		<div class="col-md-4">
+			<label class="form-label pink-label">Тип автомобил</label>
+			<select asp-for="Type" id="Type" class="form-select pink-select">
+				<option value="">--Избери тип--</option>
+				@foreach (EnumDTO type in types)
+				{
+					<option value="@type.Value">@type.Text</option>
+				}
+			</select>
+			<span asp-validation-for="Type" class="text-danger"></span>
+		</div>
+		<div class="col-md-4">
+			<label class="form-label pink-label">Статус</label>
+			<input class="form-control pink-input" value="@Model.Status.GetDisplayName()" readonly />
+		</div>
+	</div>
+	<div class="row d-flex justify-content-start g-3 mt-2">
+		<div class="col-md-4">
+			<label class="form-label pink-label">Цена на ден</label>
+			<input id="priceBox" class="form-control pink-input"
+				   value="@(tariff != null ? tariff.PricePerDay.ToString("0.00") : "-") €" readonly />
+			<div class="form-text text-muted">Цената се определя по тарифа.</div>
+		</div>
+
+		<div class="col-md-4">
+			<label asp-for="ImageUrl" class="form-label pink-label">Нова снимка</label>
+			<input asp-for="ImageUrl" class="form-control pink-input" placeholder="https://..." />
+			<span asp-validation-for="ImageUrl" class="text-danger"></span>
+		</div>
+		<div class="col-md-4">
+			<label class="form-label pink-label">Преглед на текуща снимка</label>
+			<p>
+				@if (!string.IsNullOrEmpty(Model.ImageUrl))
+				{
+					<img src="@Model.ImageUrl" class="img-preview" alt="Преглед на снимка" />
+				}
+				else
+				{
+					<div class="text-muted small">Няма снимка</div>
+				}
+			</p>
+		</div>
+	</div>
+	<div class="mt-4 d-flex justify-content-end gap-2">
+		<a asp-controller="Cars" asp-action="Index" class="btn btn-outline-secondary">Назад</a>
+		<button type="submit" class="btn btn-baby-green">Запази</button>
+	</div>
+</form>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+
+	<script>
+		$("#Type").on("change", function () {
+			var carTypeValue = $(this).val();
+			var priceBox = $("#priceBox");
+
+			if (!carTypeValue) {
+				priceBox.val("-");
+				return;
+			}
+
+			$.ajax({
+				type: "GET",
+				url: "/Cars/GetPriceForType",
+				data: { type: carTypeValue },
+				dataType: "json",
+				success: function (data) {
+					priceBox.val(Number(data).toFixed(2) + " €");
+				},
+				error: function () {
+					priceBox.val("-")
+				}
+			});
+		});
+	</script>
+}

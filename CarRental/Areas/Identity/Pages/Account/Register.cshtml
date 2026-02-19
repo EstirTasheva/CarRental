@@ -1,0 +1,46 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Нямате акаунт?";
+}
+
+<div class="row d-flex justify-content-center">
+    <div class="col-md-4">
+        <h1 class="pink-title text-center">@ViewData["Title"]</h1>
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <h4 class="pink-title text-center">Регистрирайте се бързо и лесно</h4>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.FirstName" class="form-control pink-input" autocomplete="given-name" aria-required="true" placeholder="Собствено име" />
+                <label asp-for="Input.FirstName">Собствено име</label>
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.LastName" class="form-control pink-input" autocomplete="family-name" aria-required="true" placeholder="Фамилия" />
+                <label asp-for="Input.LastName">Фамилия</label>
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Email" class="form-control pink-input" autocomplete="username" aria-required="true" placeholder="Имейл" />
+                <label asp-for="Input.Email">Имейл</label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Password" class="form-control pink-input" autocomplete="new-password" aria-required="true" placeholder="Парола" />
+                <label asp-for="Input.Password">Парола</label>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.ConfirmPassword" class="form-control pink-input" autocomplete="new-password" aria-required="true" placeholder="Потвърди паролата" />
+                <label asp-for="Input.ConfirmPassword">Потвърди паролата</label>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-pink mb-3">Регистрация</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

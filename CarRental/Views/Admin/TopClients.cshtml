@@ -1,0 +1,48 @@
+﻿@model IEnumerable<ApplicationUser>
+
+@{
+	ViewData["Title"] = "Най-често наемащи клиенти";
+}
+
+<h2 class="pink-title mb-3">ТОП Клиенти по брой наеми</h2>
+
+@if (!Model.Any())
+{
+	<div class="Alert alert-info">Няма намерени клиенти.</div>
+}
+else
+{
+	<div class="table-responsive">
+		<table class="table table-striped table-hover align-middle">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Име</th>
+					<th>Имейл</th>
+					<th>Телефон</th>
+					<th class="text-end">Брой предишни наеми</th>
+				</tr>
+			</thead>
+			<tbody>
+				@{
+					int index = 1;
+				}
+				@foreach (ApplicationUser client in Model)
+				{
+					<tr>
+						<td>@index</td>
+						<td>@client.FirstName @client.LastName</td>
+						<td>@(client.Email ?? "-")</td>
+						<td>@(client.PhoneNumber ?? "-")</td>
+						<td class="text-end">@client.PreviousRentalsCount</td>
+					</tr>
+					index++;
+				}
+			</tbody>
+		</table>
+	</div>
+	<div class="text-end">
+		<a asp-controller="Admin" asp-action="Clients" class="btn btn-outline-secondary">Назад</a>
+	</div>
+
+}

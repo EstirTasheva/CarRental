@@ -1,0 +1,58 @@
+﻿@model IEnumerable<ApplicationUser>
+
+@{
+	ViewData["Title"] = "Клиенти";
+	string search = ViewBag.Search as string ?? string.Empty;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+	<h2 class="pink-title mb-0">Клиенти</h2>
+	<a asp-controller="Admin" asp-action="TopClients" class="btn btn-pink">🔝 ТОП Клиенти</a>
+</div>
+
+
+<form method="get" class="card card-body filter-card mb-3">
+	<label class="form-label pink-label">Търсене (име, имейл или телефон)</label>
+	<div class="row g-2">
+		<div class="col-md-8">
+			<input name="search" value="@search" class="form-control pink-input" placeholder="Име / Имейл / Телефон" />
+		</div>
+		<div class="col-md-2 d-grid">
+			<button type="submit" class="btn btn-softpink">Търси</button>
+		</div>
+		<div class="col-md-2 d-grid">
+			<a asp-controller="Admin" asp-action="Clients" class="btn btn-outline-secondary">Изчисти</a>
+		</div>
+	</div>
+</form>
+
+@if (!Model.Any())
+{
+	<div class="alert alert-info">Няма намерени клиенти.</div>
+}
+else
+{
+	<div class="table-responsive">
+		<table class="table table-striped table-hover align-middle">
+			<thead>
+				<tr>
+					<th>Име</th>
+					<th>Имейл</th>
+					<th>Телефон</th>
+					<th class="text-end">Брой предишни наеми</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (ApplicationUser client in Model)
+				{
+					<tr>
+						<td>@client.FirstName @client.LastName</td>
+						<td>@(client.Email ?? "-")</td>
+						<td>@(client.PhoneNumber ?? "-")</td>
+						<td class="text-end">@client.PreviousRentalsCount</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+}
