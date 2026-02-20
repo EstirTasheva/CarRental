@@ -23,7 +23,7 @@ namespace CarRental.Controllers
         }
 
         [Authorize(Roles = "Employee,Administrator")]
-        public async Task<IActionResult> Index(string? client, string? car, int? status, DateTime? fromDate, DateTime? toDate)
+        public async Task<IActionResult> Index(string? client, int? carId, int? status, DateTime? fromDate, DateTime? toDate)
         {
             IQueryable<RentalContract> rental = _context.RentalContracts
                 .Include(r => r.Car)
@@ -36,12 +36,9 @@ namespace CarRental.Controllers
                 rental = rental.Where(r => (r.Client.FirstName + " " + r.Client.LastName).Contains(client) || r.Client.Email.Contains(client));
             }
 
-            if (!string.IsNullOrWhiteSpace(car))
+            if (carId.HasValue && carId.Value != 0)
             {
-                rental = rental.Where(r =>
-                r.Car.Brand.Contains(car) ||
-                r.Car.Model.Contains(car) ||
-                r.Car.RegistrationNumber.Contains(car));
+                rental = rental.Where(r => r.CarId == carId.Value);
             }
 
             if (status.HasValue && status.Value != 0)
@@ -63,12 +60,13 @@ namespace CarRental.Controllers
             var viewModel = new RentalsIndexViewModel
             {
                 Client = client,
-                Car = car,
+                CarId = carId,
                 Status = status,
                 FromDate = fromDate,
                 ToDate = toDate,
                 Statuses = _statusService.GetAll(),
-                Rentals = await rental.ToListAsync()
+                Rentals = await rental.ToListAsync(),
+                Cars = await _context.Cars.ToListAsync()
             };
 
             return View(viewModel);

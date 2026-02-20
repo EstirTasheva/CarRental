@@ -1,6 +1,7 @@
 ﻿@using CarRental.Models.ViewModels
 @using CarRental.Helpers
 @using CarRental.Enums;
+@using CarRental.Models
 @model RentalsIndexViewModel
 
 @{
@@ -17,7 +18,16 @@
 		</div>
 		<div class="col-md-4">
 			<label class="form-label pink-label">Автомобил</label>
-			<input type="text" name="car" value="@Model.Car" class="form-control pink-input" placeholder="Марка/модел/рег. №" />
+			<select name="carId" class="form-select pink-input">
+				<option value="">--Всички--</option>
+				@foreach (var car in Model.Cars)
+				{
+					bool isSelected = (Model.CarId == car.Id);
+					<option value="@car.Id" selected="@isSelected">
+						@car.Brand @car.Model (Рег. № @car.RegistrationNumber)
+					</option>
+				}
+			</select>
 		</div>
 		<div class="col-md-4">
 			<label class="form-label pink-label">Статус на договора</label>
