@@ -195,8 +195,7 @@ namespace CarRental.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             Car? car = await _context.Cars
-                .Include(c =>
-                c.RentalContracts)
+                .Include(c => c.RentalContracts)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (car == null)
@@ -228,15 +227,8 @@ namespace CarRental.Controllers
                 return NotFound();
             }
 
-            if (car.Status == CarStatus.Rented)
-            {
-                TempData["Error"] = "Автомобилът е нает и не може да бъде изпратен в сервиз.";
-                return RedirectToAction(nameof(Index));
-            }
-
             car.Status = CarStatus.InService;
             await _context.SaveChangesAsync();
-            TempData["Success"] = "Автомобилът е изпратен в сервиз.";
             return RedirectToAction(nameof(Index));
         }
 
@@ -249,24 +241,9 @@ namespace CarRental.Controllers
             {
                 return NotFound();
             }
-            if (car.Status != CarStatus.InService)
-            {
-                TempData["Error"] = "Автомобилът не е в сервиз.";
-                return RedirectToAction(nameof(Index));
-            }
-
-            bool hasActiveRentals = await _context.RentalContracts
-                .AnyAsync(rc => rc.CarId == id && rc.Status == RentalContractStatus.Active);
-
-            if (hasActiveRentals)
-            {
-                TempData["Error"] = "Автомобилът има активни наеми и не може да бъде върнат като наличен.";
-                return RedirectToAction(nameof(Index));
-            }
 
             car.Status = CarStatus.Available;
             await _context.SaveChangesAsync();
-            TempData["Success"] = "Автомобилът е върнат от сервиз и е наличен.";
             return RedirectToAction(nameof(Index));
         }
 

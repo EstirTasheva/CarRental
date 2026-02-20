@@ -20,7 +20,6 @@
 
 <h2 class="mb-3 pink-title">Добавяне на автомобил</h2>
 <form asp-controller="Cars" asp-action="Create" method="post" enctype="multipart/form-data" class="card card-body filter-card">
-	@Html.AntiForgeryToken()
 	<div class="row g-3">
 		<div class="col-md-4">
 			<label asp-for="RegistrationNumber" class="form-label pink-label"></label>
