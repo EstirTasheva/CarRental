@@ -19,7 +19,7 @@
 					<tr>
 						<th>Тип автомобил</th>
 						<th>Цена / ден</th>
-						@if (User.IsInRole("Administrator") || User.IsInRole("Employee"))
+						@if (User.IsInRole("Administrator"))
 						{
 							<th class="text-end">Действия</th>
 						}
@@ -31,7 +31,7 @@
 						<tr>
 							<td>@tariff.CarType.GetDisplayName()</td>
 							<td>@tariff.PricePerDay.ToString("0.00") €</td>
-							@if (User.IsInRole("Administrator") || User.IsInRole("Employee"))
+							@if (User.IsInRole("Administrator"))
 							{
 								<td class="text-end">
 									<a asp-controller="PriceTariffs" asp-action="Edit" asp-route-id="@tariff.Id" class="btn btn-baby-yellow">Редактирай</a>
@@ -44,7 +44,7 @@
 		</div>
 	</div>
 	<div class="col-md-5">
-		<div class="card filter-card"> 
+		<div class="card filter-card">
 			<div class="card-body">
 				<h5 class="pink-title">Типове автомобили</h5>
 				<p class="text-muted small">
@@ -68,16 +68,6 @@
 
 				<hr class="my-3" />
 
-				<h6 class="pink-label mb-2">Как се изчислява цената?</h6>
-				<div class="p-3 rounded bg-light border">
-					<div class="small">
-						<strong>Обща цена</strong> = <strong>брой дни</strong> × <strong>цена/ден</strong>
-					</div>
-					<div class="text-muted small mt-1">
-						Пример: 3 дни × 60,00 € = 180,00 €
-					</div>
-				</div>
-
 				<h6 class="pink-label mt-3 mb-2">Условия за наем</h6>
 				<ul class="list-unstyled small mb-3" style="line-height:2;">
 					<li>🪪 Валидна шофьорска книжка</li>
@@ -86,10 +76,12 @@
 					<li>📞 Поддръжка при нужда</li>
 				</ul>
 
-				<a asp-controller="Cars" asp-action="Index" class="btn btn-pink w-100">
-					Разгледай автомобили
-				</a>
-			</div>
+				@if (!User.IsInRole("Administrator"))
+				{
+					<a asp-controller="Cars" asp-action="Index" class="btn btn-pink w-100">
+						Разгледай автомобили
+					</a>
+				}
 			</div>
 		</div>
 	</div>
