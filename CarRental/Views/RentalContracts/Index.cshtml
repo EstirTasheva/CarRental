@@ -44,11 +44,11 @@
 		</div>
 		<div class="col-md-2">
 			<label class="form-label pink-label">От дата</label>
-			<input type="date" name="fromDate" value="@Model.FromDate" class="form-control pink-input" />
+			<input asp-for="FromDate" type="date" class="form-control pink-input" />
 		</div>
 		<div class="col-md-2">
 			<label class="form-label pink-label">До дата</label>
-			<input type="date" name="toDate" value="@Model.ToDate" class="form-control pink-input" />
+			<input asp-for="ToDate" type="date" class="form-control pink-input" />
 		</div>
 		<div class="col-md-2 d-grid mt-5">
 			<button type="submit" class="btn btn-softpink">Търси</button>

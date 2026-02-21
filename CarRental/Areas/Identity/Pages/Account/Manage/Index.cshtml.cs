@@ -60,6 +60,7 @@ namespace CarRental.Areas.Identity.Pages.Account.Manage
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             /// 
+            [Required(ErrorMessage = "Въведете телефонен номер.")]
             [Display(Name = "Телефонен номер")]
             public string PhoneNumber { get; set; }
         }

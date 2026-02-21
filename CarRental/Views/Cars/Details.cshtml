@@ -6,9 +6,10 @@
 	ViewData["Title"] = "Детайли за автомобил";
 }
 
-<div class="row g-4">
+<h2 class="pink-title mb-3">Детайли за автомобил</h2>
 
-	<div class="col-lg-6">
+<div class="row g-4">
+	<div class="col-6">
 		@if (!string.IsNullOrEmpty(Model.ImageUrl))
 		{
 			<img src="@Model.ImageUrl"
@@ -25,7 +26,7 @@
 		}
 	</div>
 
-	<div class="col-lg-6">
+	<div class="col-6">
 		<h2 class="mb-1">@Model.Brand @Model.Model</h2>
 		<div class="text-muted mb-3">Рег. № @Model.RegistrationNumber</div>
 
