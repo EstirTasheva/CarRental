@@ -26,36 +26,29 @@ body {
     min-height: 100vh;
 }
 
-.filter-card {
-    border: 1px solid #f0d7e6;
-    border-radius: 16px;
-    box-shadow: 0 8px 20px rgba(0,0,0,.05);
-    background-color: #fff !important;
+.footer-title {
+    font-weight: 600;
+    color: #a0185e;
 }
 
-.car-card {
-    border-radius: 18px;
-    overflow: hidden;
-    transition: .2s ease;
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-.car-card:hover {
-    transform: translateY(-3px);
+.footer-links li {
+    margin-bottom: 6px;
 }
 
-.car-card img {
-    width: 100%;
-    height: 190px;
-    object-fit: cover;
+.footer-links a {
+    text-decoration: none;
+    color: #5a3a48;
 }
 
-.img-preview {
-    height: 110px;
-    width: 100%;
-    max-width: 220px;
-    object-fit: cover;
-    border-radius: 14px;
-    border: 1px solid #f1f1f1;
+.footer-links a:hover {
+    text-decoration: underline;
+    color: #a0185e;
 }
 
 .logo-img {
@@ -65,22 +58,6 @@ body {
 
 .logo-img:hover {
     transform: scale(1.05);
-}
-
-.nav-pills .nav-link {
-    color: mediumvioletred;
-    background-color: transparent;
-}
-
-.nav-pills .nav-link.active {
-    background-color: lavenderblush;
-    color: mediumvioletred;
-    font-weight: 600;
-}
-
-.nav-pills .nav-link:hover {
-    background-color: #f8ddea;
-    color: #7a1f4d;
 }
 
 

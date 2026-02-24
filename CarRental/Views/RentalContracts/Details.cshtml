@@ -40,9 +40,9 @@
 					</div>
 
 					<div class="mb-3">
-						<label class="form-label pink-label">Обща цена</label>
+						<label class="form-label pink-label">Крайна дата</label>
 						<div class="fw-semibold">
-							@Model.TotalPrice.ToString("0.00") €
+							@Model.EndDate.ToString("dd.MM.yyyy")
 						</div>
 					</div>
 
@@ -64,9 +64,9 @@
 					</div>
 
 					<div class="mb-3">
-						<label class="form-label pink-label">Крайна дата</label>
+						<label class="form-label pink-label">Обща цена</label>
 						<div class="fw-semibold">
-							@Model.EndDate.ToString("dd.MM.yyyy")
+							@Model.TotalPrice.ToString("0.00") €
 						</div>
 					</div>
 

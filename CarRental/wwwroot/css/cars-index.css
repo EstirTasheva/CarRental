@@ -1,0 +1,15 @@
+﻿.car-card {
+    border-radius: 18px;
+    overflow: hidden;
+    transition: .2s ease;
+}
+
+.car-card:hover {
+    transform: translateY(-3px);
+}
+
+.car-card img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+}

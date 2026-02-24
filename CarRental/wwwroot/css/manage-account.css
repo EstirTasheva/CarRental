@@ -1,0 +1,15 @@
+﻿.nav-pills .nav-link {
+    color: mediumvioletred;
+    background-color: transparent;
+}
+
+.nav-pills .nav-link.active {
+    background-color: lavenderblush;
+    color: mediumvioletred;
+    font-weight: 600;
+}
+
+.nav-pills .nav-link:hover {
+    background-color: #f8ddea;
+    color: #7a1f4d;
+}
