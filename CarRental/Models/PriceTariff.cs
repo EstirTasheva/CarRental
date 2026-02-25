@@ -15,6 +15,7 @@ namespace CarRental.Models
         [Required]
         [Column(TypeName = "decimal(18,2)")]
         [Display(Name = "Цена на ден")]
+        [Range(0.01, 100000, ErrorMessage = "Цената на ден трябва да е положително число.")]
         public decimal PricePerDay { get; set; }
     }
 }

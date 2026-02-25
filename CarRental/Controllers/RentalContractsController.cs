@@ -128,12 +128,6 @@ namespace CarRental.Controllers
                 ModelState.AddModelError(string.Empty, "Автомобилът вече е нает за избрания период.");
             }
 
-            if (car.Status == CarStatus.InService)
-            {
-                ModelState.AddModelError(string.Empty, "Автомобилът е в сервиз и не може да бъде нает.");
-                return View(model);
-            }
-
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -157,7 +151,7 @@ namespace CarRental.Controllers
 
             if (tariff == null)
             {
-                ModelState.AddModelError(string.Empty, "Няма зададена тарифа за този тип автомобил.");
+                TempData["Error"] = "Няма зададена тарифа за този тип автомобил.";
                 return RedirectToAction("Index", "Cars");
             }
 

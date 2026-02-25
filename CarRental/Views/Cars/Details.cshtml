@@ -98,7 +98,17 @@
 
 			@if (User.IsInRole("Administrator"))
 			{
-				<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-baby-yellow">Редакция</a>
+				@if (Model.Status == CarStatus.Rented)
+				{
+					<button class="btn btn-baby-grey" disabled>Редакция</button>
+				}
+				else
+				{
+					<a asp-controller="Cars" asp-action="Edit" asp-route-id="@Model.Id"
+					   class="btn btn-baby-yellow">
+						Редакция
+					</a>
+				}
 				<a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-baby-red">Изтрий</a>
 			}
 		</div>
