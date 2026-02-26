@@ -5,6 +5,7 @@ using CarRental.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarRental.Controllers
@@ -94,7 +95,7 @@ namespace CarRental.Controllers
                 return View(model);
             }
 
-            var user = new ApplicationUser
+            ApplicationUser user = new ApplicationUser
             {
                 UserName = model.Email,
                 Email = model.Email,
@@ -103,18 +104,19 @@ namespace CarRental.Controllers
                 PreviousRentalsCount = 0
             };
 
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (result.Succeeded)
+            ApplicationUser? existing = await _userManager.FindByEmailAsync(model.Email);
+            if (existing != null)
             {
-                await _userManager.AddToRoleAsync(user, Role.Client.ToString());
-                return RedirectToAction(nameof(Clients));
+                ModelState.AddModelError(nameof(model.Email), "Този имейл вече е регистриран.");
+                return View(model);
             }
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-            return View(model);
+
+            await _userManager.CreateAsync(user, model.Password);
+
+            await _userManager.AddToRoleAsync(user, Role.Client.ToString());
+            return RedirectToAction(nameof(Clients));
         }
+
 
         [Authorize(Roles = "Administrator")]
         [HttpGet]
@@ -159,16 +161,16 @@ namespace CarRental.Controllers
             user.Email = model.Email;
             user.UserName = model.Email;
             user.PhoneNumber = model.PhoneNumber;
-            var result = await _userManager.UpdateAsync(user);
-            if (result.Succeeded)
+
+            ApplicationUser? existing = await _userManager.FindByEmailAsync(model.Email);
+            if (existing != null)
             {
-                return RedirectToAction(nameof(Clients));
+                ModelState.AddModelError(nameof(model.Email), "Този имейл вече е регистриран.");
+                return View(model);
             }
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-            return View(model);
+
+            await _userManager.UpdateAsync(user);
+            return RedirectToAction(nameof(Clients));
         }
 
         [HttpPost]
