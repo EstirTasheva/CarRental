@@ -4,6 +4,7 @@ using CarRental.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarRental.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260225144931_AddCarPriceTarrifRelation")]
+    partial class AddCarPriceTarrifRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -338,7 +341,7 @@ namespace CarRental.Migrations
             modelBuilder.Entity("CarRental.Models.Car", b =>
                 {
                     b.HasOne("CarRental.Models.PriceTariff", "PriceTariff")
-                        .WithMany("Cars")
+                        .WithMany()
                         .HasForeignKey("PriceTariffId")
                         .OnDelete(DeleteBehavior.Restrict);
 
@@ -423,11 +426,6 @@ namespace CarRental.Migrations
             modelBuilder.Entity("CarRental.Models.Car", b =>
                 {
                     b.Navigation("RentalContracts");
-                });
-
-            modelBuilder.Entity("CarRental.Models.PriceTariff", b =>
-                {
-                    b.Navigation("Cars");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,8 +8,8 @@ namespace CarRental.Models
     {
         public int Id { get; set; }
 
-        [Required]
-        [Display(Name = "Тип автомобил")]
+        [Required(ErrorMessage = "Избери тип автомобил.")]
+        [Display(Name = "Тип")]
         public CarType CarType { get; set; }
 
         [Required]
@@ -17,5 +17,7 @@ namespace CarRental.Models
         [Display(Name = "Цена на ден")]
         [Range(0.01, 100000, ErrorMessage = "Цената на ден трябва да е положително число.")]
         public decimal PricePerDay { get; set; }
+
+        public ICollection<Car> Cars { get; set; } = new List<Car>();
     }
 }

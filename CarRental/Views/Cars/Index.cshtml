@@ -117,10 +117,7 @@ else
 						<div class="mt-3 d-flex align-items-baseline gap-2">
 							Цена на ден:
 							<span class="text-success" style="font-size:large;">
-								@{
-									var tariff = Model.Tariffs.FirstOrDefault(t => t.CarType == car.Type);
-								}
-								@(tariff != null ? tariff.PricePerDay.ToString("0.00") : "-") €
+								@(car.PriceTariff != null ? car.PriceTariff.PricePerDay.ToString("0.00") : "-") €
 							</span>
 						</div>
 					</div>

@@ -52,11 +52,7 @@
 				<h5>
 					Цена на ден:
 					<span class="text-success">
-						@{
-							List<PriceTariff> tariffs = ViewBag.Tariffs as List<PriceTariff>;
-							var tariff = tariffs.FirstOrDefault(t => t.CarType == Model.Type);
-						}
-						@(tariff != null ? tariff.PricePerDay.ToString("0.00") : "-") €
+						@(Model.PriceTariff != null ? Model.PriceTariff.PricePerDay.ToString("0.00") : "-") €
 					</span>
 				</h5>
 			</div>

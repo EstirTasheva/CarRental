@@ -65,7 +65,7 @@
 		<div class="col-md-4">
 			<label class="form-label pink-label">Цена на ден</label>
 			<input id="priceBox" class="form-control pink-input"
-				   value="@(tariff != null ? tariff.PricePerDay.ToString("0.00") : "-") €" readonly />
+				   value="@(Model.PriceTariff != null ? Model.PriceTariff.PricePerDay.ToString("0.00") : "-") €" readonly />
 			<div class="form-text text-muted">Цената се определя по тарифа.</div>
 		</div>
 

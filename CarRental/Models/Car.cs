@@ -35,13 +35,14 @@ namespace CarRental.Models
         [Display(Name = "Статус")]
         public CarStatus Status { get; set; }
 
-        [Column(TypeName = "decimal(18,2)")]
-        [Display(Name = "Цена на ден")]
-        public decimal? PricePerDay { get; set; }
-
         [Display(Name = "Снимка")]
         [Url(ErrorMessage = "Моля въведете валиден линк.")]
         public string? ImageUrl { get; set; }
+
+        public int? PriceTariffId { get; set; }
+
+        public PriceTariff? PriceTariff { get; set; }
+
         public ICollection<RentalContract> RentalContracts { get; set; } = new List<RentalContract>();
     }
 }

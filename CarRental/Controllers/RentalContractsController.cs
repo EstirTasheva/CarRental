@@ -76,7 +76,9 @@ namespace CarRental.Controllers
         [Authorize(Roles = "Client")]
         public async Task<IActionResult> Create(int carId)
         {
-            Car? car = await _context.Cars.FindAsync(carId);
+            Car? car = await _context.Cars
+                .Include(c => c.PriceTariff)
+                .FirstOrDefaultAsync(c => c.Id == carId);
 
             if (car == null || car.Status == CarStatus.InService)
             {
@@ -91,7 +93,6 @@ namespace CarRental.Controllers
             };
 
             ViewBag.Car = car;
-            ViewBag.Tariffs = await _context.PriceTariffs.ToListAsync();
             return View(model);
         }
 
@@ -99,7 +100,9 @@ namespace CarRental.Controllers
         [Authorize(Roles = "Client")]
         public async Task<IActionResult> Create(RentalCreateViewModel model)
         {
-            Car? car = await _context.Cars.FindAsync(model.CarId);
+            Car? car = await _context.Cars
+                .Include(c => c.PriceTariff)
+                .FirstOrDefaultAsync(c => c.Id == model.CarId);
 
             if (car == null || car.Status == CarStatus.InService)
             {
@@ -147,15 +150,13 @@ namespace CarRental.Controllers
                 days = 1;
             }
 
-            var tariff = await _context.PriceTariffs.FirstOrDefaultAsync(t => t.CarType == car.Type);
-
-            if (tariff == null)
+            if (car.PriceTariff == null)
             {
                 TempData["Error"] = "Няма зададена тарифа за този тип автомобил.";
                 return RedirectToAction("Index", "Cars");
             }
 
-            decimal total = days * tariff.PricePerDay;
+            decimal total = days * car.PriceTariff.PricePerDay;
 
             RentalContract contract = new RentalContract
             {
@@ -177,6 +178,9 @@ namespace CarRental.Controllers
             }
 
             await _context.SaveChangesAsync();
+
+            TempData["TotalPrice"] = total.ToString("0.00");
+            TempData["Days"] = days.ToString();
 
             return RedirectToAction("Success");
         }

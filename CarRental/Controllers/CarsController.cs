@@ -25,7 +25,7 @@ namespace CarRental.Controllers
         //Списък + филтри
         public async Task<IActionResult> Index(string? brand, int? status, int? type, int? year)
         {
-            IQueryable<Car> cars = _context.Cars.AsQueryable();
+            IQueryable<Car> cars = _context.Cars.Include(c => c.PriceTariff).AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(brand))
             {
@@ -58,7 +58,7 @@ namespace CarRental.Controllers
                 Statuses = _statusService.GetAll(),
                 Types = _typeService.GetAll(),
                 Tariffs = await _context.PriceTariffs.ToListAsync(),
-                Cars = await cars.OrderBy(car => car.Brand).ThenBy(car => car.PricePerDay).ToListAsync()
+                Cars = await cars.OrderBy(car => car.Brand).ThenBy(car => car.PriceTariff.PricePerDay).ToListAsync()
             };
 
             return View(viewModel);
@@ -88,7 +88,7 @@ namespace CarRental.Controllers
             }
             else
             {
-                car.PricePerDay = tariff.PricePerDay;
+                car.PriceTariffId = tariff.Id;
             }
 
             if (!ModelState.IsValid)
@@ -141,7 +141,7 @@ namespace CarRental.Controllers
             {
                 ViewBag.Types = _typeService.GetAll();
                 car.Status = existing.Status;
-                car.PricePerDay = existing.PricePerDay;
+                car.PriceTariffId = existing.PriceTariffId;
 
                 return View(car);
             }
@@ -151,7 +151,7 @@ namespace CarRental.Controllers
             existing.Model = car.Model;
             existing.Year = car.Year;
             existing.Type = car.Type;
-            existing.PricePerDay = tariff?.PricePerDay;
+            existing.PriceTariffId = tariff.Id;
             existing.ImageUrl = car.ImageUrl;
 
             await _context.SaveChangesAsync();
@@ -162,13 +162,14 @@ namespace CarRental.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            Car car = await _context.Cars.FindAsync(id);
+            Car? car = await _context.Cars
+                .Include(c => c.PriceTariff)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
             if (car == null)
             {
                 return NotFound();
             }
-
-            ViewBag.Tariffs = await _context.PriceTariffs.ToListAsync();
 
             return View(car);
         }
@@ -177,14 +178,14 @@ namespace CarRental.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int id)
         {
-            Car? car = await _context.Cars.FindAsync(id);
+            Car? car = await _context.Cars
+                 .Include(c => c.PriceTariff)
+                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (car == null)
             {
                 return NotFound();
             }
-
-            ViewBag.Tariffs = await _context.PriceTariffs.ToListAsync();
 
             return View(car);
         }
@@ -196,6 +197,7 @@ namespace CarRental.Controllers
         {
             Car? car = await _context.Cars
                 .Include(c => c.RentalContracts)
+                .Include(c => c.PriceTariff)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (car == null)

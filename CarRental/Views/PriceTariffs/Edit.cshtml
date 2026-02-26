@@ -13,7 +13,8 @@
 			<input type="hidden" asp-for="Id" />
 			<div class="mb-3">
 				<label class="form-label pink-label">Тип автомобил</label>
-				<input class="form-control pink-input" value="@Model.CarType.GetDisplayName()" disabled />
+				<input class="form-control pink-input" value="@Model.CarType.GetDisplayName()" readonly />
+				<input type="hidden" asp-for="CarType" />
 			</div>
 			<div class="mb-3">
 				<label asp-for="PricePerDay" class="form-label pink-label"></label>

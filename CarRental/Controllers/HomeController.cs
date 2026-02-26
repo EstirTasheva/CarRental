@@ -21,17 +21,6 @@ namespace CarRental.Controllers
 
         public async Task <IActionResult> Index()
         {
-            var cars = await _context.Cars
-                .Where(c => c.Status == CarStatus.Available)
-                .OrderBy(c => c.Id)
-                .Take(3)
-                .ToListAsync();
-
-            return View(cars);
-        }
-
-        public IActionResult Privacy()
-        {
             return View();
         }
 

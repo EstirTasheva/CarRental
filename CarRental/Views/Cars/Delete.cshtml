@@ -66,11 +66,7 @@
             <div class="fs-5 fw-semibold">
                 Цена на ден:
                 <span>
-                    @{
-                        List<PriceTariff> tariffs = ViewBag.Tariffs as List<PriceTariff>;
-                        var tariff = tariffs.FirstOrDefault(t => t.CarType == Model.Type);
-                    }
-                    @(tariff != null ? tariff.PricePerDay.ToString("0.00") : "-") €
+                    @(Model.PriceTariff != null ? Model.PriceTariff.PricePerDay.ToString("0.00") : "-") €
                 </span>
             </div>
             <div class="text-muted small">

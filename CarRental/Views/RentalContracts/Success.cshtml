@@ -1,9 +1,20 @@
-﻿<h2 class="pink-title mb-3">Успешен наем</h2>
+﻿<div class="d-flex justify-content-between align-items-center mb-3">
+	<h2 class="pink-title mb-0">Успешен наем</h2>
+	<a asp-action="MyRentals" class="btn btn-pink">🔑 Моите наеми</a>
+</div>
 
 <div class="alert alert-success">
 	Плащането е прието и наемът е създаден успешно!
 </div>
 
-<div class="d-flex justify-content-end">
-	<a asp-action="MyRentals" class="btn btn-pink">Моите наеми</a>
-</div>
+@if (TempData["TotalPrice"] != null && TempData["Days"] != null)
+{
+	<div class="alert alert-light border mt-3">
+		<h6 class="mb-2">
+			Продължителност на наема: <strong>@TempData["Days"] дни</strong>
+		</h6>
+		<h6 class="mb-0">
+			Обща цена: <span class="text-success">@TempData["TotalPrice"] € </span>
+		</h6>
+	</div>
+}

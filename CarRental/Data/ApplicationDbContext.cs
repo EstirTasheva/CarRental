@@ -30,6 +30,12 @@ namespace CarRental.Data
                 .WithOne(r => r.Client)
                 .HasForeignKey(r => r.ClientId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Car>()
+                .HasOne(c => c.PriceTariff)
+                .WithMany(t => t.Cars)
+                .HasForeignKey(c => c.PriceTariffId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

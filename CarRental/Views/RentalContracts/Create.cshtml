@@ -12,11 +12,7 @@
 	<div class="alert alert-success">
 		<strong>@car.Brand @car.Model</strong><br />
 		Цена на ден: 
-		@{
-			List<PriceTariff> tariffs = ViewBag.Tariffs as List<PriceTariff> ?? new List<PriceTariff>();
-			var tariff = tariffs.FirstOrDefault(t => t.CarType == car.Type);
-		}
-		@(tariff != null ? tariff.PricePerDay.ToString("0.00") : "-") €
+		@(car.PriceTariff != null ? car.PriceTariff.PricePerDay.ToString("0.00") : "-") €
 	</div>
 
 	<form method="post">

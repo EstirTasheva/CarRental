@@ -1,0 +1,45 @@
+﻿@using CarRental.Models.ViewModels
+@model EditClientViewModel
+
+@{
+	ViewData["Title"] = "Редактиране на клиент";
+}
+
+<h2 class="mb-3 pink-title">Редактиране на клиент</h2>
+<form asp-controller="Admin" asp-action="EditClient" method="post" class="card card-body filter-card">
+	<input asp-for="UserId" type="hidden" />
+	<div class="row g-3">
+		<div class="col-md-4">
+			<label asp-for="FirstName" class="form-label pink-label"></label>
+			<input asp-for="FirstName" class="form-control pink-input" />
+			<span asp-validation-for="FirstName" class="text-danger"></span>
+		</div>
+
+		<div class="col-md-4">
+			<label asp-for="LastName" class="form-label pink-label"></label>
+			<input asp-for="LastName" class="form-control pink-input" />
+			<span asp-validation-for="LastName" class="text-danger"></span>
+		</div>
+
+		<div class="col-md-4">
+			<label asp-for="Email" class="form-label pink-label"></label>
+			<input asp-for="Email" class="form-control pink-input" />
+			<span asp-validation-for="Email" class="text-danger"></span>
+		</div>
+
+		<div class="col-md-4">
+			<label asp-for="PhoneNumber" class="form-label pink-label"></label>
+			<input asp-for="PhoneNumber" class="form-control pink-input" />
+			<span asp-validation-for="PhoneNumber" class="text-danger"></span>
+		</div>
+
+		<div class="d-flex justify-content-end gap-2">
+			<a asp-action="Clients" class="btn btn-outline-secondary">Назад</a>
+			<button type="submit" name="submit" value="save" class="btn btn-baby-green">Запази</button>
+		</div>
+	</div>
+</form>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

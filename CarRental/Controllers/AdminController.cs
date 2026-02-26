@@ -1,5 +1,7 @@
-﻿using CarRental.Enums;
+﻿using CarRental.Data;
+using CarRental.Enums;
 using CarRental.Models;
+using CarRental.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +13,12 @@ namespace CarRental.Controllers
     public class AdminController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationDbContext _context;
 
-        public AdminController(UserManager<ApplicationUser> userManager)
+        public AdminController(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
             _userManager = userManager;
+            _context = context;
         }
 
         // Списък с потребители
@@ -59,16 +63,13 @@ namespace CarRental.Controllers
                 return NotFound();
             }
 
-            // Вземаме всички роли на потребителя
             var roles = await _userManager.GetRolesAsync(user);
 
-            // Махаме Employee, ако го има
             if (roles.Contains(Role.Employee.ToString()))
             {
                 await _userManager.RemoveFromRoleAsync(user, Role.Employee.ToString());
             }
 
-            // Ако няма никаква роля, връщаме Client
             roles = await _userManager.GetRolesAsync(user);
 
             if (!roles.Any())
@@ -77,6 +78,119 @@ namespace CarRental.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public IActionResult CreateClient()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateClient(CreateClientViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = new ApplicationUser
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                PreviousRentalsCount = 0
+            };
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, Role.Client.ToString());
+                return RedirectToAction(nameof(Clients));
+            }
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View(model);
+        }
+
+        [Authorize(Roles = "Administrator")]
+        [HttpGet]
+        public async Task<IActionResult> EditClient(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            EditClientViewModel model = new EditClientViewModel
+            {
+                UserId = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber
+            };
+
+            return View(model);
+        }
+
+        [Authorize(Roles = "Administrator")]
+        [HttpPost]
+        public async Task<IActionResult> EditClient(EditClientViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            ApplicationUser? user = await _userManager.FindByIdAsync(model.UserId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.Email = model.Email;
+            user.UserName = model.Email;
+            user.PhoneNumber = model.PhoneNumber;
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                return RedirectToAction(nameof(Clients));
+            }
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteClient(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            bool hasContracts = await _context.RentalContracts.AnyAsync(r => r.ClientId == userId);
+
+            if (hasContracts)
+            {
+                TempData["Error"] = "Не може да изтриете този клиент, тъй като има свързани договори за наем.";
+                return RedirectToAction(nameof(Clients));
+            }
+
+            await _userManager.DeleteAsync(user);
+            return RedirectToAction(nameof(Clients));
         }
 
         // Търсене на клиенти
