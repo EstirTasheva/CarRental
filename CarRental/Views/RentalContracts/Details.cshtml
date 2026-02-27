@@ -75,15 +75,15 @@
 						<div class="fw-semibold">
 							@if (@Model.Status == RentalContractStatus.Active)
 							{
-								<span class="badge bg-success">Активен</span>
+								<span class="badge bg-white text-success border border-success badge-size">Активен</span>
 							}
 							else if (@Model.Status == RentalContractStatus.Canceled)
 							{
-								<span class="badge bg-danger">Анулиран</span>
+								<span class="badge bg-white text-danger border border-danger badge-size">Анулиран</span>
 							}
 							else if (@Model.Status == RentalContractStatus.Finished)
 							{
-								<span class="badge bg-warning text-dark">Завършен</span>
+								<span class="badge bg-white text-dark border border-warning badge-size">Завършен</span>
 							}
 						</div>
 					</div>

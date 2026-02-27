@@ -163,7 +163,7 @@ namespace CarRental.Controllers
             user.PhoneNumber = model.PhoneNumber;
 
             ApplicationUser? existing = await _userManager.FindByEmailAsync(model.Email);
-            if (existing != null)
+            if (existing != null && existing.Id != user.Id)
             {
                 ModelState.AddModelError(nameof(model.Email), "Този имейл вече е регистриран.");
                 return View(model);

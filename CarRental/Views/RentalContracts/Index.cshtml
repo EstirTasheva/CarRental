@@ -101,15 +101,15 @@ else
 						<td>
 							@if (rental.Status == RentalContractStatus.Active)
 							{
-								<span class="badge bg-success">Активен</span>
+								<span class="badge bg-white text-success border border-success bagde-size">Активен</span>
 							}
 							else if (rental.Status == RentalContractStatus.Canceled)
 							{
-								<span class="badge bg-danger">Анулиран</span>
+								<span class="badge bg-white text-danger border border-danger badge-size">Анулиран</span>
 							}
 							else if (rental.Status == RentalContractStatus.Finished)
 							{
-								<span class="badge bg-warning text-dark">Завършен</span>
+								<span class="badge bg-white text-dark border border-warning badge-size">Завършен</span>
 							}
 						</td>
 						<td>

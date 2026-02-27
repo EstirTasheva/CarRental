@@ -100,15 +100,15 @@ else
 						<div class="d-flex flex-wrap gap-2">
 							@if (car.Status == CarStatus.Available)
 							{
-								<span class="badge bg-success">Наличен</span>
+								<span class="badge bg-white text-success border border-success">Наличен</span>
 							}
 							else if (car.Status == CarStatus.Rented)
 							{
-								<span class="badge bg-danger">Наета</span>
+								<span class="badge bg-white text-danger border border-danger">Наета</span>
 							}
 							else if (car.Status == CarStatus.InService)
 							{
-								<span class="badge bg-warning text-dark">В сервиз</span>
+								<span class="badge bg-white text-dark border border-warning">В сервиз</span>
 							}
 							<span class="badge bg-light text-dark border">@car.Type.GetDisplayName()</span>
 							<span class="badge bg-light text-dark border">@car.Year г.</span>

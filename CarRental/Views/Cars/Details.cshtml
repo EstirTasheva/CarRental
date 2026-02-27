@@ -20,7 +20,7 @@
 		else
 		{
 			<div class="d-flex justify-content-center align-items-center bg-light rounded"
-				 style="height:450px;">
+				 style="height:400px;">
 				<span class="text-muted">Няма снимка</span>
 			</div>
 		}
@@ -30,18 +30,18 @@
 		<h2 class="mb-1">@Model.Brand @Model.Model</h2>
 		<div class="text-muted mb-3">Рег. № @Model.RegistrationNumber</div>
 
-		<div class="d-flex flex-wrap gap-2 mb-2">
+		<div class="d-flex flex-wrap gap-2 mb-3">
 			@if (Model.Status == CarStatus.Available)
 			{
-				<span class="badge bg-success">Наличен</span>
+				<span class="badge bg-white text-success border border-success">Наличен</span>
 			}
 			else if (Model.Status == CarStatus.Rented)
 			{
-				<span class="badge bg-danger">Наета</span>
+				<span class="badge bg-white text-danger border border-danger">Наета</span>
 			}
 			else if (Model.Status == CarStatus.InService)
 			{
-				<span class="badge bg-warning text-dark">В сервиз</span>
+				<span class="badge bg-white text-dark border border-warning">В сервиз</span>
 			}
 			<span class="badge bg-light text-dark border">@Model.Type.GetDisplayName()</span>
 			<span class="badge bg-light text-dark border">@Model.Year г.</span>

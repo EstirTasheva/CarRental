@@ -7,7 +7,7 @@ namespace CarRental.Helpers
     {
         public static string GetDisplayName(this Enum enumValue)
         {
-            MemberInfo memberInfo = enumValue.GetType().GetMember(enumValue.ToString()).FirstOrDefault();
+            MemberInfo? memberInfo = enumValue.GetType().GetMember(enumValue.ToString()).FirstOrDefault();
 
             if (memberInfo == null)
             {

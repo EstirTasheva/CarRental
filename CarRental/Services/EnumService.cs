@@ -9,7 +9,7 @@ namespace CarRental.Services
     {
         public IEnumerable<EnumDTO> GetAll()
         {
-            IEnumerable<T> enumValues = Enum.GetValues(typeof(T)) as IEnumerable<T>;
+            IEnumerable<T>? enumValues = Enum.GetValues(typeof(T)) as IEnumerable<T>;
 
             IEnumerable<EnumDTO> enumDTOs = enumValues.Select(enumValue => new EnumDTO
             {

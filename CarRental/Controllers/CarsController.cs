@@ -64,7 +64,6 @@ namespace CarRental.Controllers
             return View(viewModel);
         }
 
-        // Create (само Admin)
         [HttpGet]
         [Authorize(Roles = "Administrator")]
         public IActionResult Create()
@@ -213,8 +212,6 @@ namespace CarRental.Controllers
 
             _context.Cars.Remove(car);
             await _context.SaveChangesAsync();
-
-            TempData["Success"] = "Автомобилът беше изтрит успешно.";
             return RedirectToAction(nameof(Index));
         }
 

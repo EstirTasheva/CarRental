@@ -137,3 +137,13 @@
     color: mediumvioletred;
     font-weight: 800;
 }
+
+.badge {
+    font-size: 12px;
+    padding: 4px 8px;
+    line-height: 1;
+}
+
+.bagde-size {
+    width: 80px !important;
+}
