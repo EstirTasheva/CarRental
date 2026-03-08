@@ -20,6 +20,12 @@
     color: white;
 }
 
+.btn-pink:hover {
+    background-color: hotpink;
+    border-color: hotpink;
+    color: white;
+}
+
 .btn-outline-pink {
     background-color: transparent;
     border: 1px solid mediumvioletred;
@@ -29,12 +35,6 @@
 .btn-outline-pink:hover {
     background-color: mediumvioletred;
     border-color: mediumvioletred;
-    color: white;
-}
-
-.btn-pink:hover {
-    background-color: deeppink;
-    border-color: deeppink;
     color: white;
 }
 
@@ -139,9 +139,8 @@
 }
 
 .badge {
-    font-size: 12px;
+    font-size: 13px;
     padding: 4px 8px;
-    line-height: 1;
 }
 
 .bagde-size {

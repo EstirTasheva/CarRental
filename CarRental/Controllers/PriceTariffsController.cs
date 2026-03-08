@@ -51,15 +51,6 @@ namespace CarRental.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(PriceTariff model)
         {
-            bool hasActiveRentalsForThisType = await _context.RentalContracts.AnyAsync(r =>
-            r.Status == RentalContractStatus.Active && r.Car.Type == model.CarType);
-
-            if (hasActiveRentalsForThisType)
-            {
-                TempData["Error"] = "Не може да редактирате тарифата, защото има активни наеми за този тип автомобили.";
-                return RedirectToAction(nameof(Index));
-            }
-
             if (!ModelState.IsValid)
             {
                 return View(model);

@@ -1,6 +1,4 @@
-﻿@using CarRental.Models
-@using CarRental.Helpers
-@model Car
+﻿@model Car
 
 @{
 	ViewData["Title"] = "Редактиране на автомобил";
@@ -67,7 +65,7 @@
 		</div>
 
 		<div class="col-md-4">
-			<label asp-for="ImageUrl" class="form-label pink-label">Нова снимка</label>
+			<label asp-for="ImageUrl" class="form-label pink-label">Снимка</label>
 			<input asp-for="ImageUrl" class="form-control pink-input" placeholder="https://..." />
 			<span asp-validation-for="ImageUrl" class="text-danger"></span>
 		</div>

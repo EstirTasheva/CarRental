@@ -42,3 +42,53 @@
     font-size: 24px;
     font-weight: 800;
 }
+
+.home-subtitle {
+    font-size: 18px;
+    font-weight: 400;
+    color: dimgrey;
+}
+
+.simple-step {
+    background-color: rgba(255, 255, 255, 0.75);
+    border: 1px solid #f1d1df;
+    border-radius: 20px;
+    padding: 30px 20px;
+    height: 100%;
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    background-color: mediumvioletred;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 22px;
+    margin: 0 auto 15px auto;
+}
+
+.faq-box {
+    background-color: #fff;
+    border: 1px solid #f1d2df;
+    border-radius: 18px;
+    padding: 20px 24px;
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.faq-box p {
+    margin: 0;
+}
+
+.faq-img {
+    width: 100%;
+    max-width: 380px;
+    height: 380px;
+    object-fit: cover;
+    border-radius: 18px;
+    border: 1px solid #f1d2df;
+}
