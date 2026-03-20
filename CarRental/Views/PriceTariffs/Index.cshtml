@@ -33,7 +33,10 @@
 							@if (User.IsInRole("Administrator"))
 							{
 								<td class="text-end">
-									<a asp-controller="PriceTariffs" asp-action="Edit" asp-route-id="@tariff.Id" class="btn btn-baby-yellow">Редакция</a>
+									<a asp-controller="PriceTariffs"
+									asp-action="Edit" 
+									asp-route-id="@tariff.Id" 
+									class="btn btn-baby-yellow">Редакция</a>
 								</td>
 							}
 						</tr>

@@ -36,12 +36,14 @@ namespace CarRental.Controllers
                 return NotFound();
             }
 
-            bool hasActiveRentalsForThisType = await _context.RentalContracts.AnyAsync(r =>
-            r.Status == RentalContractStatus.Active && r.Car.Type == tariff.CarType);
+            bool hasActiveRentalsForThisType = await _context.RentalContracts
+                .AnyAsync(r => 
+                r.Status == RentalContractStatus.Active && r.Car.Type == tariff.CarType);
 
             if (hasActiveRentalsForThisType)
             {
-                TempData["Error"] = "Не може да редактирате тарифата, защото има активни наеми за този тип автомобили.";
+                TempData["Error"] = "Не може да редактирате тарифата, " +
+                    "защото има активни наеми за този тип автомобили.";
                 return RedirectToAction(nameof(Index));
             }
 

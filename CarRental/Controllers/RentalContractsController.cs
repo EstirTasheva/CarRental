@@ -112,12 +112,14 @@ namespace CarRental.Controllers
 
             if (model.StartDate.Date < DateTime.Today)
             {
-                ModelState.AddModelError(string.Empty, "Началната дата не може да е преди днешната дата.");
+                ModelState.AddModelError(string.Empty, 
+                    "Началната дата не може да е преди днешната дата.");
             }
 
             if (model.EndDate.Date < model.StartDate.Date)
             {
-                ModelState.AddModelError(string.Empty, "Крайната дата не може да е преди началната дата.");
+                ModelState.AddModelError(string.Empty, 
+                    "Крайната дата не може да е преди началната дата.");
             }
 
             bool hasOverlap = await _context.RentalContracts.AnyAsync(r =>

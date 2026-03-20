@@ -222,7 +222,8 @@ namespace CarRental.Controllers
         [HttpGet]
         public async Task<IActionResult> TopClients(int top = 5)
         {
-            IList<ApplicationUser> clients = await _userManager.GetUsersInRoleAsync(Role.Client.ToString());
+            IList<ApplicationUser> clients = await _userManager
+                .GetUsersInRoleAsync(Role.Client.ToString());
             var topClients = clients
                 .OrderByDescending(u => u.PreviousRentalsCount)
                 .Take(top)

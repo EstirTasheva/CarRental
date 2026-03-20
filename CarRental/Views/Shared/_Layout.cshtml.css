@@ -45,3 +45,8 @@ button.accept-policy {
     line-height: 60px;
     background-color: lavenderblush;
 }
+
+.page-padding {
+    padding-left: 70px !important;
+    padding-right: 70px !important;
+}
