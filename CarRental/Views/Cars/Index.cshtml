@@ -139,6 +139,12 @@ else
 								@if (car.Status == CarStatus.Rented)
 								{
 									<button class="btn btn-baby-grey" disabled>Редакция</button>
+									<form asp-controller="Cars" asp-action="SendToService" method="post">
+										<input type="hidden" name="id" value="@car.Id" />
+										<button type="submit" class="btn btn-baby-grey" disabled>
+											Изпрати в сервиз
+										</button>
+									</form>
 								}
 								else
 								{

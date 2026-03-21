@@ -5,7 +5,7 @@
 .home-bg {
     height: 100vh;
     width: 100%;
-    background-image: url('/images/pinkPhoto.png');
+    background-image: url('/images/HomePhoto.png');
     background-size: cover;
     background-position: center;
     display: flex;

@@ -21,8 +21,8 @@ namespace CarRental.Data.Seed
         {
             ApplicationUser adminUser = new()
             {
-                UserName = "admin@carrental.com",
-                Email = "admin@carrental.com",
+                UserName = "admin@abv.bg",
+                Email = "admin@abv.bg",
                 FirstName = "Администратор",
                 LastName = "Система",
                 EmailConfirmed = true
@@ -41,8 +41,8 @@ namespace CarRental.Data.Seed
         {
             ApplicationUser employeeUser = new()
             {
-                UserName = "employee@carrental.com",
-                Email = "employee@carrental.com",
+                UserName = "employee@abv.bg",
+                Email = "employee@abv.bg",
                 FirstName = "Иван",
                 LastName = "Иванов",
                 EmailConfirmed = true
@@ -61,8 +61,8 @@ namespace CarRental.Data.Seed
         {
             ApplicationUser clientUser = new()
             {
-                UserName = "client@carrental.com",
-                Email = "client@carrental.com",
+                UserName = "client@abv.bg",
+                Email = "client@abv.bg",
                 FirstName = "Естир",
                 LastName = "Ташева",
                 EmailConfirmed = true
