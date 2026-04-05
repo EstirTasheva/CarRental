@@ -2,6 +2,7 @@
 
 namespace CarRental.Models.ViewModels
 {
+    // ViewModel за редактиране на клиент, включващ валидация на данните
     public class EditClientViewModel
     {
         public string UserId { get; set; } = "";

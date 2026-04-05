@@ -1,5 +1,6 @@
 ﻿namespace CarRental.Models.ViewModels
 {
+    // ViewModel за предаване на данни към изгледа за списък с наеми, включително филтри и статуси
     public class RentalsIndexViewModel
     {
         public List<RentalContract> Rentals { get; set; } = new();

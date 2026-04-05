@@ -15,6 +15,7 @@ namespace CarRental.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEnumService<RentalContractStatus> _statusService;
+
         public RentalContractsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IEnumService<RentalContractStatus> statusService)
         {
             _context = context;
@@ -22,6 +23,7 @@ namespace CarRental.Controllers
             _statusService = statusService;
         }
 
+        // Показва списък с договори и позволява филтриране
         [Authorize(Roles = "Employee,Administrator")]
         public async Task<IActionResult> Index(string? client, int? carId, int? status, DateTime? fromDate, DateTime? toDate)
         {
@@ -33,7 +35,9 @@ namespace CarRental.Controllers
 
             if (!string.IsNullOrWhiteSpace(client))
             {
-                rental = rental.Where(r => (r.Client.FirstName + " " + r.Client.LastName).Contains(client) || r.Client.Email.Contains(client));
+                rental = rental.Where(r => 
+                (r.Client.FirstName + " " + r.Client.LastName).Contains(client) ||
+                (r.Client.Email != null && r.Client.Email.Contains(client)));
             }
 
             if (carId.HasValue && carId.Value != 0)
@@ -72,6 +76,7 @@ namespace CarRental.Controllers
             return View(viewModel);
         }
 
+        // Зарежда формата за създаване на нов договор
         [HttpGet]
         [Authorize(Roles = "Client")]
         public async Task<IActionResult> Create(int carId)
@@ -96,6 +101,7 @@ namespace CarRental.Controllers
             return View(model);
         }
 
+        // Създава нов договор за наем
         [HttpPost]
         [Authorize(Roles = "Client")]
         public async Task<IActionResult> Create(RentalCreateViewModel model)
@@ -108,6 +114,7 @@ namespace CarRental.Controllers
             {
                 return NotFound();
             }
+
             ViewBag.Car = car;
 
             if (model.StartDate.Date < DateTime.Today)
@@ -187,6 +194,7 @@ namespace CarRental.Controllers
             return RedirectToAction("Success");
         }
 
+        // Показва страница за успешно създаден договор
         [HttpGet]
         [Authorize(Roles = "Client")]
         public IActionResult Success()
@@ -194,6 +202,7 @@ namespace CarRental.Controllers
             return View();
         }
 
+        // Показва договорите на текущия потребител
         [Authorize(Roles = "Client")]
         public async Task<IActionResult> MyRentals()
         {
@@ -213,8 +222,8 @@ namespace CarRental.Controllers
             return View(rentals);
         }
 
+        // Приключва активен договор за наем
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Authorize(Roles = "Employee,Administrator")]
         public async Task<IActionResult> Finish(int id)
         {
@@ -250,11 +259,14 @@ namespace CarRental.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // Анулира активен договор за наем
         [HttpPost]
         [Authorize(Roles = "Employee,Administrator")]
         public async Task<IActionResult> Cancel(int id)
         {
-            RentalContract? contract = await _context.RentalContracts.Include(c => c.Car).FirstOrDefaultAsync(c => c.Id == id);
+            RentalContract? contract = await _context.RentalContracts
+                .Include(c => c.Car)
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if (contract == null)
             {
@@ -277,6 +289,7 @@ namespace CarRental.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // Показва детайли за избран договор
         [HttpGet]
         [Authorize(Roles = "Employee,Administrator")]
         public async Task<IActionResult> Details(int id)

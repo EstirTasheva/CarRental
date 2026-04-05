@@ -2,6 +2,7 @@
 
 namespace CarRental.Models.ViewModels
 {
+    // ViewModel за създаване на нов клиент, включващ валидация на данните
     public class CreateClientViewModel
     {
         [Required(ErrorMessage = "Полето „Име“ е задължително.")]
@@ -11,10 +12,6 @@ namespace CarRental.Models.ViewModels
         [Required(ErrorMessage = "Полето „Фамилия“ е задължително.")]
         [Display(Name = "Фамилия")]
         public string LastName { get; set; } = "";
-
-        [RegularExpression(@"^0[0-9]{9}$", ErrorMessage = "Телефонният номер трябва да съдържа точно 10 цифри и да започва с 0.")]
-        [Display(Name = "Телефонен номер")]
-        public string? PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "Полето „Имейл“ е задължително.")]
         [EmailAddress(ErrorMessage = "Въведете валиден имейл адрес.")]

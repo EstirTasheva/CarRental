@@ -16,6 +16,7 @@ namespace CarRental.Controllers
             _context = context;
         }
 
+        // Показва списък с всички ценови тарифи
         public async Task<IActionResult> Index()
         {
             List<PriceTariff> tariffs = await _context.PriceTariffs
@@ -25,6 +26,7 @@ namespace CarRental.Controllers
             return View(tariffs);
         }
 
+        // Зарежда формата за редакция на избрана тарифа
         [Authorize(Roles = "Administrator")]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -36,20 +38,21 @@ namespace CarRental.Controllers
                 return NotFound();
             }
 
+            // Проверява дали има активни наеми за същия тип автомобил
             bool hasActiveRentalsForThisType = await _context.RentalContracts
-                .AnyAsync(r => 
-                r.Status == RentalContractStatus.Active && r.Car.Type == tariff.CarType);
+                .AnyAsync(r => r.Status == RentalContractStatus.Active && r.Car.Type == tariff.CarType);
 
             if (hasActiveRentalsForThisType)
             {
-                TempData["Error"] = "Не може да редактирате тарифата, " +
-                    "защото има активни наеми за този тип автомобили.";
+                TempData["Error"] = "Не може да редактирате тарифата, защото има активни наеми за този тип автомобили.";
                 return RedirectToAction(nameof(Index));
             }
 
             return View(tariff);
         }
 
+        // Запазва новата стойност на избраната тарифа
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<IActionResult> Edit(PriceTariff model)
         {
@@ -65,6 +68,16 @@ namespace CarRental.Controllers
                 return NotFound();
             }
 
+            bool hasActiveRentalsForThisType = await _context.RentalContracts
+                .AnyAsync(r => r.Status == RentalContractStatus.Active && r.Car.Type == tariff.CarType);
+
+            if (hasActiveRentalsForThisType)
+            {
+                TempData["Error"] = "Не може да редактирате тарифата, защото има активни наеми за този тип автомобили.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Обновява стойността на цената за ден
             tariff.PricePerDay = model.PricePerDay;
             await _context.SaveChangesAsync();
 

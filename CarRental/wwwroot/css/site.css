@@ -26,11 +26,6 @@ body {
     min-height: 100vh;
 }
 
-.footer-title {
-    font-weight: 600;
-    color: #a0185e;
-}
-
 .footer-links {
     list-style: none;
     padding: 0;
@@ -47,8 +42,8 @@ body {
 }
 
 .footer-links a:hover {
-    text-decoration: underline;
-    color: #a0185e;
+     text-decoration: underline;
+     color: #a0185e;
 }
 
 .logo-img {
@@ -59,7 +54,3 @@ body {
 .logo-img:hover {
     transform: scale(1.05);
 }
-
-
-
-

@@ -9,12 +9,14 @@
 <div class="row">
 	@if (TempData["Error"] != null)
 	{
-		<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		<div class="alert alert-warning alert-dismissible" role="alert">
 			@TempData["Error"]
 			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>
 	}
+
 	<div class="col-md-7">
+		<!-- Таблица със списък на всички ценови тарифи -->
 		<div class="table-responsive d-flex justify-content-center">
 			<table class="table table-striped align-middle">
 				<thead>
@@ -48,7 +50,9 @@
 			</table>
 		</div>
 	</div>
+
 	<div class="col-md-5">
+		<!-- Информационен панел за типовете автомобили и начина на ценообразуване -->
 		<div class="card filter-card">
 			<div class="card-body">
 				<h6 class="pink-title">Типове автомобили</h6>
@@ -57,13 +61,14 @@
 				</p>
 
 				<div class="row small" style="line-height:2;">
-					<div class="col-6">
+					<div class="col-md-6">
 						<div><strong>Седан</strong> – град/пътуване</div>
 						<div><strong>SUV</strong> – терен/пътуване</div>
 						<div><strong>Ван</strong> – групи/багаж</div>
 						<div><strong>Хечбек</strong> – компактен</div>
 					</div>
-					<div class="col-6">
+
+					<div class="col-md-6">
 						<div><strong>Купе</strong> – спортен</div>
 						<div><strong>Кабриолет</strong> – удоволствие</div>
 						<div><strong>Пикап</strong> – товар/работа</div>

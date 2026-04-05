@@ -5,6 +5,7 @@ namespace CarRental.Helpers
 {
     public static class EnumDisplayHelper
     {
+        // Метод за получаване на дисплей името на enum стойност
         public static string GetDisplayName(this Enum enumValue)
         {
             MemberInfo? memberInfo = enumValue.GetType().GetMember(enumValue.ToString()).FirstOrDefault();

@@ -5,12 +5,12 @@ using CarRental.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarRental.Controllers
 {
-    [Authorize(Roles = nameof(Role.Administrator))]
+    // Достъп само за администратора
+    [Authorize(Roles = "Administrator")]
     public class AdminController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -32,28 +32,37 @@ namespace CarRental.Controllers
             return View(users);
         }
 
-        // Направи служител
+        // Променя ролята на потребител на служител
         [HttpPost]
         public async Task<IActionResult> MakeEmployee(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
+
             if (user == null)
             {
                 return NotFound();
             }
 
-            // Ако е Client -> махаме Client
-            if (await _userManager.IsInRoleAsync(user, Role.Client.ToString()))
+            bool hasActiveRentals = await _context.RentalContracts
+                .AnyAsync(r => r.ClientId == user.Id && r.Status == RentalContractStatus.Active);
+
+            if (hasActiveRentals)
             {
-                await _userManager.RemoveFromRoleAsync(user, Role.Client.ToString());
+                TempData["Error"] = "Потребител с активен договор не може да бъде променен в служител.";
+                return RedirectToAction(nameof(Index));
             }
 
-            await _userManager.AddToRoleAsync(user, Role.Employee.ToString());
+            await _userManager.RemoveFromRoleAsync(user, Role.Client.ToString());
+
+            if (!await _userManager.IsInRoleAsync(user, Role.Employee.ToString()))
+            {
+                await _userManager.AddToRoleAsync(user, Role.Employee.ToString());
+            }
 
             return RedirectToAction(nameof(Index));
         }
 
-        // Махни служител (връща го на Client)
+        // Премахва ролята на служител и връща потребителя като клиент
         [HttpPost]
         public async Task<IActionResult> RemoveEmployee(string userId)
         {
@@ -64,16 +73,9 @@ namespace CarRental.Controllers
                 return NotFound();
             }
 
-            var roles = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRoleAsync(user, Role.Employee.ToString());
 
-            if (roles.Contains(Role.Employee.ToString()))
-            {
-                await _userManager.RemoveFromRoleAsync(user, Role.Employee.ToString());
-            }
-
-            roles = await _userManager.GetRolesAsync(user);
-
-            if (!roles.Any())
+            if (!await _userManager.IsInRoleAsync(user, Role.Client.ToString()))
             {
                 await _userManager.AddToRoleAsync(user, Role.Client.ToString());
             }
@@ -87,6 +89,7 @@ namespace CarRental.Controllers
             return View();
         }
 
+        // Създава нов клиент
         [HttpPost]
         public async Task<IActionResult> CreateClient(CreateClientViewModel model)
         {
@@ -105,20 +108,34 @@ namespace CarRental.Controllers
             };
 
             ApplicationUser? existing = await _userManager.FindByEmailAsync(model.Email);
+
             if (existing != null)
             {
                 ModelState.AddModelError(nameof(model.Email), "Този имейл вече е регистриран.");
                 return View(model);
             }
 
-            await _userManager.CreateAsync(user, model.Password);
+            var createResult = await _userManager.CreateAsync(user, model.Password);
 
-            await _userManager.AddToRoleAsync(user, Role.Client.ToString());
+            if (!createResult.Succeeded)
+            {
+                ModelState.AddModelError(string.Empty, "Потребителят не можа да бъде създаден.");
+                return View(model);
+            }
+
+            var roleResult = await _userManager.AddToRoleAsync(user, Role.Client.ToString());
+
+            if (!roleResult.Succeeded)
+            {
+                ModelState.AddModelError(string.Empty, "Ролята не можа да бъде добавена.");
+                await _userManager.DeleteAsync(user);
+                return View(model);
+            }
+
             return RedirectToAction(nameof(Clients));
         }
 
-
-        [Authorize(Roles = "Administrator")]
+        // Зарежда формата за редакция на клиент
         [HttpGet]
         public async Task<IActionResult> EditClient(string userId)
         {
@@ -141,7 +158,7 @@ namespace CarRental.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Administrator")]
+        // Запазва промените по избран клиент
         [HttpPost]
         public async Task<IActionResult> EditClient(EditClientViewModel model)
         {
@@ -149,11 +166,20 @@ namespace CarRental.Controllers
             {
                 return View(model);
             }
+
             ApplicationUser? user = await _userManager.FindByIdAsync(model.UserId);
 
             if (user == null)
             {
                 return NotFound();
+            }
+
+            ApplicationUser? existing = await _userManager.FindByEmailAsync(model.Email);
+
+            if (existing != null && existing.Id != user.Id)
+            {
+                ModelState.AddModelError(nameof(model.Email), "Този имейл вече е регистриран.");
+                return View(model);
             }
 
             user.FirstName = model.FirstName;
@@ -162,17 +188,18 @@ namespace CarRental.Controllers
             user.UserName = model.Email;
             user.PhoneNumber = model.PhoneNumber;
 
-            ApplicationUser? existing = await _userManager.FindByEmailAsync(model.Email);
-            if (existing != null && existing.Id != user.Id)
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
             {
-                ModelState.AddModelError(nameof(model.Email), "Този имейл вече е регистриран.");
+                ModelState.AddModelError(string.Empty, "Възникна грешка при редактирането на клиента.");
                 return View(model);
             }
 
-            await _userManager.UpdateAsync(user);
             return RedirectToAction(nameof(Clients));
         }
 
+        // Изтрива клиент, ако няма свързани договори
         [HttpPost]
         public async Task<IActionResult> DeleteClient(string userId)
         {
@@ -191,7 +218,14 @@ namespace CarRental.Controllers
                 return RedirectToAction(nameof(Clients));
             }
 
-            await _userManager.DeleteAsync(user);
+            var result = await _userManager.DeleteAsync(user);
+
+            if (!result.Succeeded)
+            {
+                TempData["Error"] = "Възникна грешка при изтриването на клиента.";
+                return RedirectToAction(nameof(Clients));
+            }
+
             return RedirectToAction(nameof(Clients));
         }
 
@@ -203,11 +237,13 @@ namespace CarRental.Controllers
 
             if (!string.IsNullOrWhiteSpace(search))
             {
-                search = search.Trim().ToLower();
+                search = search.Trim();
+                string searchText = search.ToLower();
 
                 clients = clients
-                    .Where(c => (c.FirstName + " " + c.LastName).ToLower().Contains(search) ||
-                                (c.Email ?? "").ToLower().Contains(search) || (c.PhoneNumber ?? "").ToLower().Contains(search))
+                    .Where(c => (c.FirstName + " " + c.LastName).ToLower().Contains(searchText) ||
+                                (c.Email ?? "").ToLower().Contains(searchText) ||
+                                (c.PhoneNumber ?? "").ToLower().Contains(searchText))
                     .ToList();
             }
             else
@@ -219,15 +255,16 @@ namespace CarRental.Controllers
             return View(clients);
         }
 
+        // Показва клиентите с най-много предишни наеми
         [HttpGet]
         public async Task<IActionResult> TopClients(int top = 5)
         {
             IList<ApplicationUser> clients = await _userManager
-                .GetUsersInRoleAsync(Role.Client.ToString());
+                .GetUsersInRoleAsync(Role.Client.ToString()); 
+            
             var topClients = clients
                 .OrderByDescending(u => u.PreviousRentalsCount)
-                .Take(top)
-                .ToList();
+                .Take(top).ToList();
 
             return View(topClients);
         }

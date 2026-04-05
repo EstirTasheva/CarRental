@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarRental.Models
 {
+    // Модел за ценова тарифа
     public class PriceTariff
     {
         public int Id { get; set; }

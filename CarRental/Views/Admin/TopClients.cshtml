@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ApplicationUser>
+﻿@* Този изглед показва клиентите с най-голям брой предишни наеми. *@
+@model IEnumerable<ApplicationUser>
 
 @{
 	ViewData["Title"] = "Най-често наемащи клиенти";
@@ -8,7 +9,7 @@
 
 @if (!Model.Any())
 {
-	<div class="Alert alert-info">Няма намерени клиенти.</div>
+	<div class="alert alert-info">Няма намерени клиенти.</div>
 }
 else
 {
@@ -27,6 +28,7 @@ else
 				@{
 					int index = 1;
 				}
+
 				@foreach (ApplicationUser client in Model)
 				{
 					<tr>
@@ -41,6 +43,7 @@ else
 			</tbody>
 		</table>
 	</div>
+
 	<div class="text-end">
 		<a asp-controller="Admin" asp-action="Clients" class="btn btn-outline-secondary">Назад</a>
 	</div>

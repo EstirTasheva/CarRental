@@ -6,6 +6,7 @@ namespace CarRental.Data.Seed
 {
     public static class IdentitySeeder
     {
+        // Създава ролите в системата, ако все още не съществуват
         public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
         {
             foreach (string roleName in Enum.GetNames(typeof(Role)))
@@ -17,6 +18,7 @@ namespace CarRental.Data.Seed
             }
         }
 
+        // Създава начален администраторски акаунт
         public static async Task SeedAdminAsync(UserManager<ApplicationUser> userManager)
         {
             ApplicationUser adminUser = new()
@@ -37,6 +39,7 @@ namespace CarRental.Data.Seed
             }
         }
 
+        // Създава начален служителски акаунт
         public static async Task SeedEmployeeAsync(UserManager<ApplicationUser> userManager)
         {
             ApplicationUser employeeUser = new()
@@ -57,6 +60,7 @@ namespace CarRental.Data.Seed
             }
         }
 
+        // Създава начален клиентски акаунт
         public static async Task SeedClientAsync(UserManager<ApplicationUser> userManager)
         {
             ApplicationUser clientUser = new()

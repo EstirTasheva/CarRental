@@ -3,7 +3,7 @@
 @{
 	ViewData["Title"] = "Редактиране на автомобил";
 
-	IEnumerable<EnumDTO> types;
+	IEnumerable<EnumDTO>? types;
 	if (ViewBag.Types != null)
 	{
 		types = ViewBag.Types as IEnumerable<EnumDTO>;
@@ -17,29 +17,31 @@
 <h2 class="mb-3 pink-title">Редактиране на автомобил</h2>
 
 <form asp-controller="Cars" asp-action="Edit" asp-route-id="@Model.Id" method="post" class="card card-body filter-card p-4">
-	<div asp-validation-summary="All" class="text-danger mb-2"></div>
-
 	<div class="row g-3 align-items-end">
 		<div class="col-md-4">
 			<label asp-for="RegistrationNumber" class="form-label pink-label"></label>
 			<input asp-for="RegistrationNumber" class="form-control pink-input" />
 			<span asp-validation-for="RegistrationNumber" class="text-danger"></span>
 		</div>
+
 		<div class="col-md-4">
 			<label asp-for="Brand" class="form-label pink-label"></label>
 			<input asp-for="Brand" class="form-control pink-input" />
 			<span asp-validation-for="Brand" class="text-danger"></span>
 		</div>
+
 		<div class="col-md-4">
 			<label asp-for="Model" class="form-label pink-label"></label>
 			<input asp-for="Model" class="form-control pink-input" />
 			<span asp-validation-for="Model" class="text-danger"></span>
 		</div>
+
 		<div class="col-md-4">
 			<label asp-for="Year" class="form-label pink-label"></label>
 			<input asp-for="Year" class="form-control pink-input" />
 			<span asp-validation-for="Year" class="text-danger"></span>
 		</div>
+
 		<div class="col-md-4">
 			<label class="form-label pink-label">Тип автомобил</label>
 			<select asp-for="Type" id="Type" class="form-select pink-select">
@@ -51,6 +53,7 @@
 			</select>
 			<span asp-validation-for="Type" class="text-danger"></span>
 		</div>
+
 		<div class="col-md-4">
 			<label class="form-label pink-label">Статус</label>
 			<input class="form-control pink-input" value="@Model.Status.GetDisplayName()" readonly />
@@ -69,12 +72,13 @@
 			<input asp-for="ImageUrl" class="form-control pink-input" placeholder="https://..." />
 			<span asp-validation-for="ImageUrl" class="text-danger"></span>
 		</div>
+
 		<div class="col-md-4">
 			<label class="form-label pink-label">Преглед на текуща снимка</label>
 			<p>
 				@if (!string.IsNullOrEmpty(Model.ImageUrl))
 				{
-					<img src="@Model.ImageUrl" class="img-preview" alt="Преглед на снимка" />
+					<img src="@Model.ImageUrl" class="img-preview" alt="" />
 				}
 				else
 				{

@@ -19,21 +19,25 @@
 				<a class="navbar-brand logo" asp-controller="Home" asp-action="Index" title="Наем на автомобили">
 					<img src="~/images/RentACarLogo.png" alt="Лого" style="height:40px;" class="logo-img" />
 				</a>
+
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
 						aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
+
 				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item">
 							<a class="nav-link" asp-controller="Cars" asp-action="Index">Автомобили</a>
 						</li>
+
 						@if (User.IsInRole("Client"))
 						{
 							<li class="nav-item">
 								<a class="nav-link" asp-controller="RentalContracts" asp-action="MyRentals">Моите наеми</a>
 							</li>
 						}
+
 						@if (User.IsInRole("Administrator") || User.IsInRole("Employee"))
 						{
 							<li class="nav-item">
@@ -41,19 +45,23 @@
 							</li>
 
 						}
+
 						<li class="nav-item">
 							<a class="nav-link" asp-controller="PriceTariffs" asp-action="Index">Ценови тарифи</a>
 						</li>
+
 						@if (User.IsInRole("Administrator"))
 						{
 							<li class="nav-item">
 								<a class="nav-link" asp-controller="Admin" asp-action="Clients">Клиенти</a>
 							</li>
+
 							<li class="nav-item">
 								<a class="nav-link" asp-controller="Admin" asp-action="Index">Управление на роли</a>
 							</li>
 						}
 					</ul>
+
 					<partial name="_LoginPartial" />
 				</div>
 			</div>

@@ -5,6 +5,7 @@ namespace CarRental.Data.Seed
 {
     public class PriceTariffSeeder
     {
+        // Добавя начални ценови тарифи за различните типове автомобили
         public static void Seed(ApplicationDbContext context)
         {
             if (!context.PriceTariffs.Any())

@@ -22,7 +22,7 @@ namespace CarRental.Controllers
             _typeService = typeService;
         }
 
-        //Списък + филтри
+        // Показва списък с автомобили и позволява филтриране
         public async Task<IActionResult> Index(string? brand, int? status, int? type, int? year)
         {
             IQueryable<Car> cars = _context.Cars.Include(c => c.PriceTariff).AsQueryable();
@@ -57,13 +57,13 @@ namespace CarRental.Controllers
                 Year = year,
                 Statuses = _statusService.GetAll(),
                 Types = _typeService.GetAll(),
-                Tariffs = await _context.PriceTariffs.ToListAsync(),
                 Cars = await cars.OrderBy(car => car.Brand).ThenBy(car => car.PriceTariff.PricePerDay).ToListAsync()
             };
 
             return View(viewModel);
         }
 
+        // Зарежда формата за добавяне на нов автомобил
         [HttpGet]
         [Authorize(Roles = "Administrator")]
         public IActionResult Create()
@@ -72,6 +72,7 @@ namespace CarRental.Controllers
             return View();
         }
 
+        // Създава нов автомобил
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create(Car car)
@@ -98,14 +99,18 @@ namespace CarRental.Controllers
 
             _context.Cars.Add(car);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
+        // Зарежда формата за редакция на автомобил
         [HttpGet]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int id)
         {
-            Car car = await _context.Cars.FindAsync(id);
+            Car? car = await _context.Cars
+                .Include(c => c.PriceTariff)
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if (car == null)
             {
@@ -113,11 +118,11 @@ namespace CarRental.Controllers
             }
 
             ViewBag.Types = _typeService.GetAll();
-            ViewBag.Tariffs = await _context.PriceTariffs.ToListAsync();
 
             return View(car);
         }
 
+        // Запазва промените по избран автомобил
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int id, Car car)
@@ -158,6 +163,7 @@ namespace CarRental.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // Показва детайли за избран автомобил
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
@@ -173,6 +179,7 @@ namespace CarRental.Controllers
             return View(car);
         }
 
+        // Зарежда страницата за изтриване на автомобил
         [HttpGet]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int id)
@@ -189,6 +196,7 @@ namespace CarRental.Controllers
             return View(car);
         }
 
+        // Изтрива автомобил, ако няма свързани договори
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         [ActionName("Delete")]
@@ -212,11 +220,13 @@ namespace CarRental.Controllers
 
             _context.Cars.Remove(car);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
+        // Изпраща автомобил в сервиз
         [HttpPost]
-        [Authorize(Roles = "Employee,Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> SendToService(int id)
         {
             Car? car = await _context.Cars.FindAsync(id);
@@ -226,26 +236,43 @@ namespace CarRental.Controllers
                 return NotFound();
             }
 
+            if (car.Status != CarStatus.Available)
+            {
+                TempData["Error"] = "Само наличен автомобил може да бъде изпратен в сервиз.";
+                return RedirectToAction(nameof(Index));
+            }
+
             car.Status = CarStatus.InService;
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
+        // Връща автомобил от сервиз
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> ReturnFromService(int id)
         {
             Car? car = await _context.Cars.FindAsync(id);
+
             if (car == null)
             {
                 return NotFound();
             }
 
+            if (car.Status != CarStatus.InService)
+            {
+                TempData["Error"] = "Само автомобил в сервиз може да бъде върнат като наличен.";
+                return RedirectToAction(nameof(Index));
+            }
+
             car.Status = CarStatus.Available;
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
+        // Връща цената на ден за даден тип автомобил
         [HttpGet]
         [Authorize(Roles = "Employee,Administrator")]
         public async Task<IActionResult> GetPriceForType(CarType type)
@@ -261,4 +288,3 @@ namespace CarRental.Controllers
         }
     }
 }
-

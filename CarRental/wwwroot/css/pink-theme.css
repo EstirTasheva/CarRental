@@ -121,21 +121,9 @@
     width: 100%;
     max-width: 220px;
     object-fit: cover;
+    border: none;
     border-radius: 14px;
-    border: 1px solid #f1f1f1;
-}
-
-.feature-card {
-    background: white;
-    border: 1px solid #f1d1df;
-    border-radius: 16px;
-    padding: 18px;
-    height: 100%;
-}
-
-.feature-card h5 {
-    color: mediumvioletred;
-    font-weight: 800;
+    background-color: #f8f3f5;
 }
 
 .badge {
@@ -143,6 +131,6 @@
     padding: 4px 8px;
 }
 
-.bagde-size {
+.badge-size {
     width: 80px !important;
 }

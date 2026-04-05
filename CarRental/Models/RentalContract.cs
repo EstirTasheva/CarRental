@@ -4,12 +4,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarRental.Models
 {
+    // Модел за договор за наем
     public class RentalContract
     {
         public int Id { get; set; }
+
         public int CarId { get; set; }
+
         public Car Car { get; set; }
+
         public string ClientId { get; set; }
+
         public ApplicationUser Client { get; set; }
 
         [Required]

@@ -6,12 +6,14 @@
 
 <h2 class="pink-title mb-3">Договори за наем</h2>
 
+<!-- Форма за филтриране на договорите за наем -->
 <form asp-controller="RentalContracts" asp-action="Index" method="get" class="card card-body filter-card mb-3">
 	<div class="row g-3 align-items-center">
 		<div class="col-md-4">
 			<label class="form-label pink-label">Клиент</label>
 			<input type="text" name="client" value="@Model.Client" class="form-control pink-input" placeholder="Име или имейл на клиента" />
 		</div>
+
 		<div class="col-md-4">
 			<label class="form-label pink-label">Автомобил</label>
 			<select name="carId" class="form-select pink-input">
@@ -25,30 +27,35 @@
 				}
 			</select>
 		</div>
+
 		<div class="col-md-4">
 			<label class="form-label pink-label">Статус на договора</label>
 			<select name="status" class="form-select pink-input">
 				<option value="">--Всички--</option>
 				@foreach (var status in Model.Statuses)
 				{
-					bool isSelected = (Model.Status?.ToString() == status.Value.ToString());
+					bool isSelected = Model.Status == status.Value;
 					<option value="@status.Value" selected="@isSelected">
 						@status.Text
 					</option>
 				}
 			</select>
 		</div>
+
 		<div class="col-md-2">
 			<label class="form-label pink-label">От дата</label>
 			<input asp-for="FromDate" type="date" class="form-control pink-input" />
 		</div>
+
 		<div class="col-md-2">
 			<label class="form-label pink-label">До дата</label>
 			<input asp-for="ToDate" type="date" class="form-control pink-input" />
 		</div>
+
 		<div class="col-md-2 d-grid mt-5">
 			<button type="submit" class="btn btn-softpink">Търси</button>
 		</div>
+
 		<div class="col-md-2 d-grid mt-5">
 			<a asp-controller="RentalContracts" asp-action="Index" class="btn btn-outline-secondary">
 				Изчисти
@@ -65,7 +72,8 @@
 }
 else
 {
-	<div class="table-respnsive">
+	<!-- Таблица със списък на всички намерени договори -->
+	<div class="table-responsive">
 		<table class="table table-striped table-hover align-middle">
 			<thead>
 				<tr>
@@ -97,7 +105,7 @@ else
 						<td>
 							@if (rental.Status == RentalContractStatus.Active)
 							{
-								<span class="badge bg-white text-success border border-success bagde-size">Активен</span>
+								<span class="badge bg-white text-success border border-success badge-size">Активен</span>
 							}
 							else if (rental.Status == RentalContractStatus.Canceled)
 							{
@@ -109,6 +117,7 @@ else
 							}
 						</td>
 						<td>
+							<!-- Бутони за преглед и управление на активен договор -->
 							<div class="d-flex justify-content-end gap-2">
 								<a asp-controller="RentalContracts" asp-action="Details" asp-route-id="@rental.Id" class="btn btn-baby-blue">Детайли</a>
 								@if (isActive)
@@ -119,6 +128,7 @@ else
 											Завърши
 										</button>
 									</form>
+
 									<form asp-controller="RentalContracts" asp-action="Cancel" method="post" class="d-inline">
 										<input type="hidden" name="id" value="@rental.Id" />
 										<button type="submit" class="btn btn-baby-red">

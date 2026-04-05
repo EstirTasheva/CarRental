@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CarRental.Models.ViewModels
 {
+    // ViewModel за създаване на нов наем, включващ валидация на данните
     public class RentalCreateViewModel
     {
         public int CarId { get; set; }

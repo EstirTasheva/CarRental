@@ -2,6 +2,7 @@
 
 namespace CarRental.Models
 {
+    // Разширен клас за потребител, наследяващ IdentityUser, с допълнителни свойства
     public class ApplicationUser : IdentityUser
     {
         public string FirstName { get; set; }
