@@ -264,7 +264,8 @@ namespace CarRental.Controllers
             
             var topClients = clients
                 .OrderByDescending(u => u.PreviousRentalsCount)
-                .Take(top).ToList();
+                .Take(top)
+                .ToList();
 
             return View(topClients);
         }
