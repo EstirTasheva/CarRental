@@ -11,10 +11,12 @@ namespace CarRental.Data
         {
         }
 
+        // Добавя DbSet свойства за всяка от основните модели в системата
         public DbSet<Car> Cars { get; set; }
         public DbSet<RentalContract> RentalContracts { get; set; }
         public DbSet<PriceTariff> PriceTariffs { get; set; }
 
+        // Конфигурира връзките между моделите и задава правилата за изтриване
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

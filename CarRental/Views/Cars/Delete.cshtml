@@ -16,6 +16,7 @@
         </div>
     }
 
+    @* Потвърждение за изтриване *@
     <div class="alert alert-danger d-flex justify-content-between align-items-center">
         <strong>Сигурни ли сте, че искате да изтриете този автомобил?</strong>
 
@@ -29,6 +30,7 @@
         </div>
     </div>
 
+    @* Секция с изображение на автомобила *@
     <div class="col-md-6">
         @if (!string.IsNullOrEmpty(Model.ImageUrl))
         {
@@ -46,6 +48,7 @@
         }
     </div>
 
+    @* Секция с основна информация за автомобила *@
     <div class="col-md-6">
         <h2 class="mb-1">@Model.Brand @Model.Model</h2>
         <div class="text-muted mb-3">Рег. № @Model.RegistrationNumber</div>

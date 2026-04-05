@@ -23,6 +23,7 @@
 	}
 </div>
 
+@* Форма за филтриране на автомобили *@
 <form method="get" class="card card-body filter-card mb-2">
 	<div class="row g-3 align-items-end">
 
@@ -89,6 +90,7 @@
 }
 else
 {
+	@* Секция с визуални карти на автомобилите *@
 	<div class="row g-3 mt-2">
 		@foreach (var car in Model.Cars)
 		{

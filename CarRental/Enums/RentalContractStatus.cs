@@ -2,7 +2,6 @@
 
 namespace CarRental.Enums
 {
-    // Статус на договор за наем - активен, завършен или анулиран
     public enum RentalContractStatus
     {
         [Display(Name = "Активен")]

@@ -29,6 +29,7 @@ else
 					int index = 1;
 				}
 
+				@* Преглежда всеки клиент от модела *@
 				@foreach (ApplicationUser client in Model)
 				{
 					<tr>
@@ -47,5 +48,4 @@ else
 	<div class="text-end">
 		<a asp-controller="Admin" asp-action="Clients" class="btn btn-outline-secondary">Назад</a>
 	</div>
-
 }

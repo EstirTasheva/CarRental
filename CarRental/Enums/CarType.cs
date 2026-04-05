@@ -2,7 +2,6 @@
 
 namespace CarRental.Enums
 {
-    // Тип на колата - седан, SUV, ван и т.н.
     public enum CarType
     {
         [Display(Name = "Седан")]

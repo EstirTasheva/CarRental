@@ -161,8 +161,8 @@ namespace CarRental.Controllers
 
             if (car.PriceTariff == null)
             {
-                TempData["Error"] = "Няма зададена тарифа за този тип автомобил.";
-                return RedirectToAction("Index", "Cars");
+                ModelState.AddModelError(string.Empty, "Няма зададена тарифа за този тип автомобил.");
+                return View(model);
             }
 
             decimal total = days * car.PriceTariff.PricePerDay;

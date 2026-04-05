@@ -4,7 +4,7 @@
 @{
 	ViewData["Title"] = "Добавяне на автомобил";
 
-	// Типове
+	@* Списъка с типове автомобили от ViewBag *@
 	IEnumerable<EnumDTO>? types;
 	if (ViewBag.Types != null)
 	{
@@ -87,6 +87,7 @@
 @section Scripts {
 	<partial name="_ValidationScriptsPartial" />
 
+	@* Ajax за автоматична смяна на цената при смяна на типа автомобил *@
 	<script>
 		$("#Type").on("change", function () {
 			var carTypeValue = $(this).val();

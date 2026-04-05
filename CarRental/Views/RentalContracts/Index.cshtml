@@ -6,7 +6,7 @@
 
 <h2 class="pink-title mb-3">Договори за наем</h2>
 
-<!-- Форма за филтриране на договорите за наем -->
+@* Форма за филтриране на договорите за наем *@
 <form asp-controller="RentalContracts" asp-action="Index" method="get" class="card card-body filter-card mb-3">
 	<div class="row g-3 align-items-end">
 		<div class="col-md-4">
@@ -72,7 +72,7 @@
 }
 else
 {
-	<!-- Таблица със списък на всички намерени договори -->
+	@* Таблица със списък на всички намерени договори *@
 	<div class="table-responsive">
 		<table class="table table-striped table-hover align-middle">
 			<thead>
@@ -117,7 +117,7 @@ else
 							}
 						</td>
 						<td>
-							<!-- Бутони за преглед и управление на активен договор -->
+							@* Бутони за преглед и управление на активен договор *@
 							<div class="d-flex justify-content-end gap-2">
 								<a asp-controller="RentalContracts" asp-action="Details" asp-route-id="@rental.Id" class="btn btn-baby-blue">Детайли</a>
 								@if (isActive)
