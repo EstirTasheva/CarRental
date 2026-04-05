@@ -85,7 +85,7 @@
 		<div class="d-flex gap-2 flex-wrap justify-content-end">
 			<a asp-action="Index" class="btn btn-outline-secondary">Назад</a>
 
-			@if (User.IsInRole("Client") && Model.Status == CarStatus.Available)
+			@if (User.IsInRole("Client") && Model.Status != CarStatus.InService)
 			{
 				<a asp-controller="RentalContracts" asp-action="Create" asp-route-carId="@Model.Id"
 				   class="btn btn-baby-green">

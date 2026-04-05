@@ -163,13 +163,17 @@ namespace CarRental.Areas.Identity.Pages.Account
                         return LocalRedirect(returnUrl);
                     }
                 }
-                foreach (var error in result.Errors)
+                else
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    bool hasDuplicate = result.Errors.Any(e => e.Code == "DuplicateUserName" || e.Code == "DuplicateEmail");
+
+                    if (hasDuplicate)
+                    {
+                        ModelState.AddModelError(string.Empty, "Потребител с този имейл вече съществува.");
+                    }
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return Page();
         }
 

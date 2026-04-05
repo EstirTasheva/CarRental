@@ -8,7 +8,7 @@
 
 <!-- Форма за филтриране на договорите за наем -->
 <form asp-controller="RentalContracts" asp-action="Index" method="get" class="card card-body filter-card mb-3">
-	<div class="row g-3 align-items-center">
+	<div class="row g-3 align-items-end">
 		<div class="col-md-4">
 			<label class="form-label pink-label">Клиент</label>
 			<input type="text" name="client" value="@Model.Client" class="form-control pink-input" placeholder="Име или имейл на клиента" />
@@ -52,11 +52,11 @@
 			<input asp-for="ToDate" type="date" class="form-control pink-input" />
 		</div>
 
-		<div class="col-md-2 d-grid mt-5">
+		<div class="col-md-2 d-grid">
 			<button type="submit" class="btn btn-softpink">Търси</button>
 		</div>
 
-		<div class="col-md-2 d-grid mt-5">
+		<div class="col-md-2 d-grid">
 			<a asp-controller="RentalContracts" asp-action="Index" class="btn btn-outline-secondary">
 				Изчисти
 			</a>

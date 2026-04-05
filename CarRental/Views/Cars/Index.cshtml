@@ -145,7 +145,7 @@ else
 								Детайли
 							</a>
 
-							@if (User.IsInRole("Client") && car.Status == CarStatus.Available)
+							@if (User.IsInRole("Client") && car.Status != CarStatus.InService)
 							{
 								<a asp-controller="RentalContracts" asp-action="Create" asp-route-carId="@car.Id"
 								   class="btn btn-baby-green">
